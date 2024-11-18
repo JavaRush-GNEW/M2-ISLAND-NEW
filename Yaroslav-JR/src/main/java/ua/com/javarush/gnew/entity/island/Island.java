@@ -21,25 +21,4 @@ public class Island {
         }
     }
 
-    public void initializeField() {
-        Random random = new Random();
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                int grassCount = random.nextInt(91);
-                int sheepCount = random.nextInt(61);
-                int wolfCount = random.nextInt(21);
-
-                for (int grass = 0; grass < grassCount; grass++) {
-                    field[i][j].addGrass(new Grass());
-                }
-                for (int sheep = 0; sheep < sheepCount; sheep++) {
-                    field[i][j].addAnimal(new Sheep());
-                }
-                for (int wolf = 0; wolf < wolfCount; wolf++) {
-                    field[i][j].addAnimal(new Wolf());
-                }
-            }
-        }
-    }
 }
