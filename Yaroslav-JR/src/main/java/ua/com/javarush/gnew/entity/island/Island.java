@@ -21,4 +21,7 @@ public class Island {
         }
     }
 
+    public Cell[][] getField() {
+        return field;
+    }
 }
