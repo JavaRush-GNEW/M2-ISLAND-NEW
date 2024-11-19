@@ -12,9 +12,9 @@ public class Grass extends Organism {
     }
 
 
-    public void grow(Cell cell) {
+    public static void grow(Cell cell) {
         Random random = new Random();
-        if (random.nextInt(100) < 50) {
+        if (random.nextInt(100) < 90) {
             cell.addGrass(new Grass());
         }
     }
