@@ -17,9 +17,12 @@ public abstract class MeatEaters extends Animal {
                 .map(animal -> (ChewingGrass) animal)
                 .findFirst();
         if (prey.isPresent()) {
-            prey.get().die();
-            lifePower += 10;
-        }else move();
+            Random random = new Random();
+            if (random.nextInt(100) < 70){
+                prey.get().die();
+                lifePower += 10;
+            }else move();
+        }
     }
 
 
