@@ -3,17 +3,13 @@ package ua.com.javarush.gnew.entity;
 import java.util.Random;
 
 public abstract class Animal extends Organism {
-    protected int lifePower = 50;
+    protected static int lifePower = 50;
 
-    public int getLifePower() {
+    public static int getLifePower() {
         return lifePower;
     }
 
-    public void setLifePower(int lifePower) {
-        this.lifePower = lifePower;
-    }
-
-    public int move() {
+    public static int move() {
         lifePower -=5;
         if (lifePower <= 0) {
             die();

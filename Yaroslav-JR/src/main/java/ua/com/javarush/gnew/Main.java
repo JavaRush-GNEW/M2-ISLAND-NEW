@@ -6,10 +6,12 @@ import ua.com.javarush.gnew.entity.island.Island;
 import ua.com.javarush.gnew.entity.meatEaters.Wolf;
 import ua.com.javarush.gnew.entity.plant.Grass;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Random random = new Random();
         Island island = new Island();
@@ -25,17 +27,22 @@ public class Main {
                 int grassCount = random.nextInt(101);
 
 
-                for (int k = 0; k < wolfCount; k++){
+                for (int s = 0; s < wolfCount; s++){
                     cell.addAnimal(new Wolf());
                 }
-                for (int g = 0; g < sheepCount; g++){
+                for (int s = 0; s < sheepCount; s++){
                     cell.addAnimal(new Sheep());
                 }
-                for (int h = 0; h < grassCount; h++){
+                for (int s = 0; s < grassCount; s++){
                     cell.addGrass(new Grass());
                 }
             }
         }
-
+        Arrays.stream(island.getField())
+                .flatMap(Arrays::stream)
+                .flatMap(cell -> cell.getAnimals().stream())
+                .filter(animal -> animal instanceof Wolf)
+                .map(animal -> (Wolf) animal)
+                .forEach(Wolf::eat);
     }
 }

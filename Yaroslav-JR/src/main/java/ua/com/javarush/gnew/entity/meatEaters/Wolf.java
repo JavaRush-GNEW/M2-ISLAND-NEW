@@ -17,4 +17,7 @@ public class Wolf extends MeatEaters {
         }
     }
 
+
+    public void eat() {
+    }
 }

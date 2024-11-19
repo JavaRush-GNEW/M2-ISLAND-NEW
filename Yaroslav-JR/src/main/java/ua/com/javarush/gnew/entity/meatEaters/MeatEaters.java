@@ -11,7 +11,7 @@ import java.util.Random;
 
 public abstract class MeatEaters extends Animal {
 
-    public void eat(Cell cell) {
+    public static void eat(Cell cell) {
         Optional<ChewingGrass> prey = cell.getAnimals().stream()
                 .filter(animal -> animal instanceof ChewingGrass)
                 .map(animal -> (ChewingGrass) animal)
@@ -24,6 +24,8 @@ public abstract class MeatEaters extends Animal {
             }else move();
         }
     }
+
+
 
 
 }

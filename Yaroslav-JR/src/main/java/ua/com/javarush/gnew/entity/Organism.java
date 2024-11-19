@@ -1,13 +1,13 @@
 package ua.com.javarush.gnew.entity;
 
 public abstract class Organism {
-    private boolean alive = true;
+    private static boolean alive = true;
 
-    public boolean isAlive() {
+    public static boolean isAlive() {
         return alive;
     }
 
-    public void die() {
-        this.alive = false;
+    public static void die() {
+        alive = false;
     }
 }
