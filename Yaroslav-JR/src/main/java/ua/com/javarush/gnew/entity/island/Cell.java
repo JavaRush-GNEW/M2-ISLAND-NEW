@@ -1,15 +1,14 @@
 package ua.com.javarush.gnew.entity.island;
 
 import ua.com.javarush.gnew.entity.Animal;
-import ua.com.javarush.gnew.entity.chewingGrass.Sheep;
-import ua.com.javarush.gnew.entity.meatEaters.Wolf;
 import ua.com.javarush.gnew.entity.plant.Grass;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class Cell extends Island {
+import static java.awt.AWTEventMulticaster.remove;
+
+public class Cell {
 
     private final List<Animal> animals = new ArrayList<>();
     private final List<Grass> grass = new ArrayList<>();
@@ -30,4 +29,5 @@ public class Cell extends Island {
     public List<Grass> getGrass() {
         return grass;
     }
+
 }
