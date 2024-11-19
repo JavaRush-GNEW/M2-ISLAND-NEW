@@ -14,7 +14,7 @@ public class Sheep extends ChewingGrass {
             if (hasPartner){
                 setLifePower(50);
                 cell.addAnimal(new Sheep());
-            }
+            }else move();
         }
     }
 

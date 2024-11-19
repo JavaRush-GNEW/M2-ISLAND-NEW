@@ -13,7 +13,7 @@ public abstract class ChewingGrass extends Animal {
         if (grass != null){
             grass.die();
             lifePower += 10;
-        }
+        }else move();
 
 
     }
