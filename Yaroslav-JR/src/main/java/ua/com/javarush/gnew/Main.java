@@ -7,7 +7,6 @@ import ua.com.javarush.gnew.entity.meatEaters.Wolf;
 import ua.com.javarush.gnew.entity.plant.Grass;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class Main {
@@ -38,11 +37,41 @@ public class Main {
                 }
             }
         }
+
         Arrays.stream(island.getField())
                 .flatMap(Arrays::stream)
-                .flatMap(cell -> cell.getAnimals().stream())
-                .filter(animal -> animal instanceof Wolf)
-                .map(animal -> (Wolf) animal)
-                .forEach(Wolf::eat);
+                .forEach(cell -> {
+                    cell.getAnimals().stream()
+                            .filter(animal -> animal instanceof Sheep)
+                            .map(animal -> (Sheep) animal)
+                            .forEach(sheep -> {
+                               sheep.eat(cell);
+                               sheep.reproduce(cell);
+                               sheep.move();
+                            });
+                });
+        Arrays.stream(island.getField())
+                .flatMap(Arrays::stream)
+                .forEach(cell -> {
+                    cell.getGrass().stream()
+                            .filter(grass -> grass instanceof Grass)
+                            .map(grass -> (Grass) grass)
+                            .forEach(grass -> {
+                                grass.grow(cell);
+                            });
+                });
+
+        Arrays.stream(island.getField())
+                .flatMap(Arrays::stream)
+                .forEach(cell -> {
+                    cell.getAnimals().stream()
+                            .filter(animal -> animal instanceof Wolf)
+                            .map(animal -> (Wolf) animal)
+                            .forEach(wolf -> {
+                                wolf.eat(cell);
+                                wolf.reproduce(cell);
+                                wolf.move();
+                            });
+                });
     }
 }
