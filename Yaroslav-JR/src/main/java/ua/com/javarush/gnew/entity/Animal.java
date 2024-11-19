@@ -14,7 +14,7 @@ public abstract class Animal extends Organism {
     }
 
     public int move() {
-        lifePower -=10;
+        lifePower -=5;
         if (lifePower <= 0) {
             die();
         }

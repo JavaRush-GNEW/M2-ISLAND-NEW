@@ -12,7 +12,6 @@ public class Wolf extends MeatEaters {
         if(getLifePower() >= readyForReproduce){
             boolean hasPartner = cell.getAnimals().stream().anyMatch(animal -> animal instanceof Wolf && animal != this);
             if (hasPartner){
-                setLifePower(50);
                 cell.addAnimal(new Wolf());
             }else move();
         }

@@ -12,7 +12,6 @@ public class Sheep extends ChewingGrass {
         if(getLifePower() >= readyForReproduce){
             boolean hasPartner = cell.getAnimals().stream().anyMatch(animal -> animal instanceof Sheep && animal != this);
             if (hasPartner){
-                setLifePower(50);
                 cell.addAnimal(new Sheep());
             }else move();
         }
