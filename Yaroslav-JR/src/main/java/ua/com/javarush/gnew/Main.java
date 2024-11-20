@@ -1,5 +1,6 @@
 package ua.com.javarush.gnew;
 
+import ua.com.javarush.gnew.entity.Animal;
 import ua.com.javarush.gnew.entity.chewingGrass.Sheep;
 import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
@@ -7,7 +8,10 @@ import ua.com.javarush.gnew.entity.meatEaters.Wolf;
 import ua.com.javarush.gnew.entity.plant.Grass;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
@@ -18,8 +22,8 @@ public class Main {
         int totalWolfCount = 0;
         int totalSheepCount = 0;
         int totalGrassCount = 0;
-        for (int i = 0; i < 1000; i++){
-            for (int j = 0; j < 1000; j++){
+        for (int i = 0; i < 10; i++){
+            for (int j = 0; j < 10; j++){
 
                 Cell cell = island.getField()[i][j];
 
@@ -50,78 +54,90 @@ public class Main {
 
         int iterations = 0;
 
-        while (iterations < 5) {
-            for (int x = 0; x < island.getField().length; x++) {
-                for (int y = 0; y < island.getField()[x].length; y++) {
-                    Cell cell = island.getField()[x][y];
+            while (iterations < 5) {
+                for (int x = 0; x < island.getField().length; x++) {
+                    for (int y = 0; y < island.getField()[x].length; y++) {
+                        Cell cell = island.getField()[x][y];
 
-                    cell.getAnimals().removeIf(animal -> !animal.isAlive());
+                        Iterator<Animal> iterator = cell.getAnimals().iterator();
+                        while (iterator.hasNext()) {
+                            Animal animal = iterator.next();
+                            if (!animal.isAlive()) {
+                                iterator.remove();
+                            }
+                        }
 
-                    int finalX = x;
-                    int finalY = y;
-                    cell.getAnimals().stream()
-                            .filter(animal -> animal instanceof Sheep)
-                            .map(animal -> (Sheep) animal)
-                            .forEach(sheep -> {
-                                sheep.eat(cell);
-                                sheep.reproduce(cell);
-                                sheep.move(cell, island, finalX, finalY);
-                            });
+                        List<Sheep> sheepList = cell.getAnimals().stream()
+                                .filter(animal -> animal instanceof Sheep)
+                                .map(animal -> (Sheep) animal)
+                                .collect(Collectors.toList());
+
+                        for (Sheep sheep : sheepList) {
+                            sheep.eat(cell);
+                            sheep.reproduce(cell);
+                            sheep.move(cell, island, x, y);
+                        }
+                    }
                 }
-            }
-            for (int x = 0; x < island.getField().length; x++) {
-                for (int y = 0; y < island.getField()[x].length; y++) {
-                    Cell cell = island.getField()[x][y];
+                for (int x = 0; x < island.getField().length; x++) {
+                    for (int y = 0; y < island.getField()[x].length; y++) {
+                        Cell cell = island.getField()[x][y];
 
-                    cell.getGrass().removeIf(grass -> !grass.isAlive());
+                        Iterator<Grass> grassIterator = cell.getGrass().iterator();
+                        while (grassIterator.hasNext()) {
+                            Grass grass = grassIterator.next();
+                            if (!grass.isAlive()) {
+                                grassIterator.remove();
+                            }
+                        }
 
-                    cell.getGrass().forEach(grass -> grass.grow(cell));
+                        for (Grass grass : cell.getGrass()) {
+                            grass.grow(cell);
+                        }
+                    }
                 }
-            }
 
-            for (int x = 0; x < island.getField().length; x++) {
-                for (int y = 0; y < island.getField()[x].length; y++) {
-                    Cell cell = island.getField()[x][y];
+                for (int x = 0; x < island.getField().length; x++) {
+                    for (int y = 0; y < island.getField()[x].length; y++) {
+                        Cell cell = island.getField()[x][y];
 
-                    cell.getAnimals().removeIf(animal -> !animal.isAlive());
+                        List<Wolf> wolfList = cell.getAnimals().stream()
+                                .filter(animal -> animal instanceof Wolf)
+                                .map(animal -> (Wolf) animal)
+                                .collect(Collectors.toList());
 
-                    int finalX = x;
-                    int finalY = y;
-                    cell.getAnimals().stream()
-                            .filter(animal -> animal instanceof Wolf)
-                            .map(animal -> (Wolf) animal)
-                            .forEach(wolf -> {
-                                wolf.eat(cell);
-                                wolf.reproduce(cell);
-                                wolf.move(cell, island, finalX, finalY);
-                            });
+                        for (Wolf wolf : wolfList) {
+                            wolf.eat(cell);
+                            wolf.reproduce(cell);
+                            wolf.move(cell, island, x, y);
+                        }
+                    }
                 }
+                long totalWolves = Arrays.stream(island.getField())
+                        .flatMap(Arrays::stream)
+                        .flatMap(cell -> cell.getAnimals().stream())
+                        .filter(animal -> animal instanceof Wolf)
+                        .count();
+
+                long totalSheep = Arrays.stream(island.getField())
+                        .flatMap(Arrays::stream)
+                        .flatMap(cell -> cell.getAnimals().stream())
+                        .filter(animal -> animal instanceof Sheep)
+                        .count();
+
+                long totalGrass = Arrays.stream(island.getField())
+                        .flatMap(Arrays::stream)
+                        .mapToLong(cell -> cell.getGrass().size())
+                        .sum();
+
+                System.out.println("Current state of the island:");
+                System.out.println("Wolves: " + totalWolves);
+                System.out.println("Sheep: " + totalSheep);
+                System.out.println("Grass: " + totalGrass);
+
+                iterations++;
+
+                Thread.sleep(3000);
             }
-            long totalWolves = Arrays.stream(island.getField())
-                    .flatMap(Arrays::stream)
-                    .flatMap(cell -> cell.getAnimals().stream())
-                    .filter(animal -> animal instanceof Wolf)
-                    .count();
-
-            long totalSheep = Arrays.stream(island.getField())
-                    .flatMap(Arrays::stream)
-                    .flatMap(cell -> cell.getAnimals().stream())
-                    .filter(animal -> animal instanceof Sheep)
-                    .count();
-
-            long totalGrass = Arrays.stream(island.getField())
-                    .flatMap(Arrays::stream)
-                    .mapToLong(cell -> cell.getGrass().size())
-                    .sum();
-
-            System.out.println("Current state of the island:");
-            System.out.println("Wolves: " + totalWolves);
-            System.out.println("Sheep: " + totalSheep);
-            System.out.println("Grass: " + totalGrass);
-
-            iterations++;
-
-            Thread.sleep(3000);
-        }
     }
 }
