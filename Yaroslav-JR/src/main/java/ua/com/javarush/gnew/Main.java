@@ -12,8 +12,8 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        Random random = new Random();
         Island island = new Island();
+        Random random = new Random();
 
         int totalWolfCount = 0;
         int totalSheepCount = 0;
@@ -44,11 +44,13 @@ public class Main {
                 }
             }
         }
-        System.out.println(totalWolfCount + "wolves appeared on the island");
-        System.out.println(totalSheepCount + "sheep appeared on the island");
-        System.out.println(totalGrassCount + "bushes of grass appeared on the island");
+        System.out.println(totalWolfCount + " Wolves appeared on the island");
+        System.out.println(totalSheepCount + " Sheep appeared on the island");
+        System.out.println(totalGrassCount + " Bushes of grass appeared on the island");
 
-        while (true) {
+        int iterations = 0;
+
+        while (iterations < 5) {
             for (int x = 0; x < island.getField().length; x++) {
                 for (int y = 0; y < island.getField()[x].length; y++) {
                     Cell cell = island.getField()[x][y];
@@ -95,6 +97,30 @@ public class Main {
                             });
                 }
             }
+            long totalWolves = Arrays.stream(island.getField())
+                    .flatMap(Arrays::stream)
+                    .flatMap(cell -> cell.getAnimals().stream())
+                    .filter(animal -> animal instanceof Wolf)
+                    .count();
+
+            long totalSheep = Arrays.stream(island.getField())
+                    .flatMap(Arrays::stream)
+                    .flatMap(cell -> cell.getAnimals().stream())
+                    .filter(animal -> animal instanceof Sheep)
+                    .count();
+
+            long totalGrass = Arrays.stream(island.getField())
+                    .flatMap(Arrays::stream)
+                    .mapToLong(cell -> cell.getGrass().size())
+                    .sum();
+
+            System.out.println("Current state of the island:");
+            System.out.println("Wolves: " + totalWolves);
+            System.out.println("Sheep: " + totalSheep);
+            System.out.println("Grass: " + totalGrass);
+
+            iterations++;
+
             Thread.sleep(3000);
         }
     }
