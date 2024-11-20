@@ -16,7 +16,7 @@ public class Wolf extends MeatEaters {
             boolean hasPartner = cell.getAnimals().stream().anyMatch(animal -> animal instanceof Wolf && animal != this);
             if (hasPartner){
                 cell.addAnimal(new Wolf());
-            }else move();
+            }
         }
     }
 
@@ -31,7 +31,7 @@ public class Wolf extends MeatEaters {
             if (random.nextInt(100) < 70){
                 prey.get().die();
                 lifePower += 10;
-            }else move();
+            }
         }
     }
 

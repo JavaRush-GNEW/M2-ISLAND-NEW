@@ -38,40 +38,51 @@ public class Main {
             }
         }
 
-        Arrays.stream(island.getField())
-                .flatMap(Arrays::stream)
-                .forEach(cell -> {
+        while (true) {
+            for (int x = 0; x < island.getField().length; x++) {
+                for (int y = 0; y < island.getField()[x].length; y++) {
+                    Cell cell = island.getField()[x][y];
+
+                    int finalX = x;
+                    int finalY = y;
                     cell.getAnimals().stream()
                             .filter(animal -> animal instanceof Sheep)
                             .map(animal -> (Sheep) animal)
                             .forEach(sheep -> {
-                               sheep.eat(cell);
-                               sheep.reproduce(cell);
-                               sheep.move();
+                                sheep.eat(cell);
+                                sheep.reproduce(cell);
+                                sheep.move(cell, island, finalX, finalY);
                             });
-                });
-        Arrays.stream(island.getField())
-                .flatMap(Arrays::stream)
-                .forEach(cell -> {
-                    cell.getGrass().stream()
-                            .filter(grass -> grass instanceof Grass)
-                            .map(grass -> (Grass) grass)
-                            .forEach(grass -> {
-                                grass.grow(cell);
-                            });
-                });
+                }
+            }
+            Arrays.stream(island.getField())
+                    .flatMap(Arrays::stream)
+                    .forEach(cell -> {
+                        cell.getGrass().stream()
+                                .filter(grass -> grass instanceof Grass)
+                                .map(grass -> (Grass) grass)
+                                .forEach(grass -> {
+                                    grass.grow(cell);
+                                });
+                    });
 
-        Arrays.stream(island.getField())
-                .flatMap(Arrays::stream)
-                .forEach(cell -> {
+            for (int x = 0; x < island.getField().length; x++) {
+                for (int y = 0; y < island.getField()[x].length; y++) {
+                    Cell cell = island.getField()[x][y];
+
+                    int finalX = x;
+                    int finalY = y;
                     cell.getAnimals().stream()
                             .filter(animal -> animal instanceof Wolf)
                             .map(animal -> (Wolf) animal)
                             .forEach(wolf -> {
                                 wolf.eat(cell);
                                 wolf.reproduce(cell);
-                                wolf.move();
+                                wolf.move(cell, island, finalX, finalY);
                             });
-                });
+                }
+            }
+            Thread.sleep(5000);
+        }
     }
 }

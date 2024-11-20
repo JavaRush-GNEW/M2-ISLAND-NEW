@@ -30,4 +30,7 @@ public class Cell {
         return grass;
     }
 
+    public void removeAnimal(Animal animal) {
+
+    }
 }
