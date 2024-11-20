@@ -13,7 +13,7 @@ public class Sheep extends ChewingGrass {
             boolean hasPartner = cell.getAnimals().stream().anyMatch(animal -> animal instanceof Sheep && animal != this);
             if (hasPartner){
                 cell.addAnimal(new Sheep());
-            }else move();
+            }
         }
     }
     public void eat(Cell cell) {
@@ -21,7 +21,7 @@ public class Sheep extends ChewingGrass {
         if (grass != null){
             grass.die();
             lifePower += 10;
-        }else move();
+        }
     }
 
 }
