@@ -15,15 +15,22 @@ public class Main {
         Random random = new Random();
         Island island = new Island();
 
-
+        int totalWolfCount = 0;
+        int totalSheepCount = 0;
+        int totalGrassCount = 0;
         for (int i = 0; i < 1000; i++){
             for (int j = 0; j < 1000; j++){
 
                 Cell cell = island.getField()[i][j];
 
                 int wolfCount = random.nextInt(21);
+                totalWolfCount += wolfCount;
+
                 int sheepCount = random.nextInt(61);
+                totalSheepCount += sheepCount;
+
                 int grassCount = random.nextInt(101);
+                totalGrassCount += grassCount;
 
 
                 for (int s = 0; s < wolfCount; s++){
@@ -37,11 +44,16 @@ public class Main {
                 }
             }
         }
+        System.out.println(totalWolfCount + "wolves appeared on the island");
+        System.out.println(totalSheepCount + "sheep appeared on the island");
+        System.out.println(totalGrassCount + "bushes of grass appeared on the island");
 
         while (true) {
             for (int x = 0; x < island.getField().length; x++) {
                 for (int y = 0; y < island.getField()[x].length; y++) {
                     Cell cell = island.getField()[x][y];
+
+                    cell.getAnimals().removeIf(animal -> !animal.isAlive());
 
                     int finalX = x;
                     int finalY = y;
@@ -55,20 +67,21 @@ public class Main {
                             });
                 }
             }
-            Arrays.stream(island.getField())
-                    .flatMap(Arrays::stream)
-                    .forEach(cell -> {
-                        cell.getGrass().stream()
-                                .filter(grass -> grass instanceof Grass)
-                                .map(grass -> (Grass) grass)
-                                .forEach(grass -> {
-                                    grass.grow(cell);
-                                });
-                    });
+            for (int x = 0; x < island.getField().length; x++) {
+                for (int y = 0; y < island.getField()[x].length; y++) {
+                    Cell cell = island.getField()[x][y];
+
+                    cell.getGrass().removeIf(grass -> !grass.isAlive());
+
+                    cell.getGrass().forEach(grass -> grass.grow(cell));
+                }
+            }
 
             for (int x = 0; x < island.getField().length; x++) {
                 for (int y = 0; y < island.getField()[x].length; y++) {
                     Cell cell = island.getField()[x][y];
+
+                    cell.getAnimals().removeIf(animal -> !animal.isAlive());
 
                     int finalX = x;
                     int finalY = y;
@@ -82,7 +95,7 @@ public class Main {
                             });
                 }
             }
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         }
     }
 }
