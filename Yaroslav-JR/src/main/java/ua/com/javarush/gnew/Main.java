@@ -22,8 +22,8 @@ public class Main {
         int totalWolfCount = 0;
         int totalSheepCount = 0;
         int totalGrassCount = 0;
-        for (int i = 0; i < 10; i++){
-            for (int j = 0; j < 10; j++){
+        for (int i = 0; i < 100; i++){
+            for (int j = 0; j < 100; j++){
 
                 Cell cell = island.getField()[i][j];
 
@@ -137,7 +137,7 @@ public class Main {
 
                 iterations++;
 
-                Thread.sleep(3000);
+                Thread.sleep(1000);
             }
     }
 }
