@@ -1,8 +1,13 @@
-package island.domain.organism;
+package game.entity.animal;
 
-import island.domain.Area;
-import island.domain.Direction;
+import game.entity.OrganismProperty;
+import game.entity.island.Area;
+import game.entity.Direction;
+import game.entity.Organism;
+import game.utils.OrganismPropertyUtil;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,9 +20,9 @@ public abstract class Animal implements Organism {
         this.id = UUID.randomUUID().toString();
     }
 
+    public abstract OrganismProperty getProperties();
     public abstract void eat(Area area);
-    public abstract Animal reproduce();
-    public abstract void move();
+
 
     private Direction chooseDirection(){
         ThreadLocalRandom random = ThreadLocalRandom.current();

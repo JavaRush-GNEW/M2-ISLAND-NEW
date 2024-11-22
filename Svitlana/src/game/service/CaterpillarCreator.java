@@ -1,6 +1,6 @@
-package island.domain;
+package game.service;
 
-import island.domain.organism.Caterpillar;
+import game.entity.animal.Caterpillar;
 
 public class CaterpillarCreator extends OrganismCreator{
     @Override

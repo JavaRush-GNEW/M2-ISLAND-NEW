@@ -1,6 +1,6 @@
-package island.domain;
+package game.service;
 
-import island.domain.organism.Grass;
+import game.entity.plant.Grass;
 
 public class GrassCreator extends OrganismCreator{
     @Override

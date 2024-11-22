@@ -1,6 +1,6 @@
-package island.domain;
+package game.service;
 
-import island.domain.organism.Organism;
+import game.entity.Organism;
 
 public abstract class OrganismCreator {
     public abstract Organism createOrganism();

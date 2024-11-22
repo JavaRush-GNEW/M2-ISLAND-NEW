@@ -1,17 +1,18 @@
-package island.domain.organism;
+package game.entity.animal;
 
-import island.domain.Area;
+import game.entity.OrganismProperty;
+import game.entity.island.Area;
 
 public class Caterpillar extends Herbivorous {
     @Override
-    public void getProperties() {
-
+    public OrganismProperty getProperties() {
+return null;
     }
 
-    @Override
-    public void populate() {
-
-    }
+//    @Override
+//    public void populate() {
+//
+//    }
 
     @Override
     public void eat(Area area) {

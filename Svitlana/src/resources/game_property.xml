@@ -1,0 +1,10 @@
+<GameProperty>
+    <areaWidth>5</areaWidth>
+    <areaHeight>7</areaHeight>
+    <simulationTime>2</simulationTime>
+    <animals>
+        <animal>Duck</animal>
+        <animal>Wolf</animal>
+        <animal>Caterpillar</animal>
+    </animals>
+</GameProperty>

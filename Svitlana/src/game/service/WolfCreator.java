@@ -1,6 +1,6 @@
-package island.domain;
+package game.service;
 
-import island.domain.organism.Wolf;
+import game.entity.animal.Wolf;
 
 public class WolfCreator extends OrganismCreator{
     @Override
