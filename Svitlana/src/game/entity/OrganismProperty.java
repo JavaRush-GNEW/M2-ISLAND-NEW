@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class OrganismProperty {
     private  double weight;
-    private  double maxCellQuantity;
+    private  int maxCellQuantity;
     private  int maxStep;
     private  double maxFoodWeight;
     //private  boolean isHunter;
@@ -14,7 +14,7 @@ public class OrganismProperty {
     public OrganismProperty() {
     }
 
-    public OrganismProperty(double weight, double foodWeight, int maxStep, double maxFoodWeight) {
+    public OrganismProperty(double weight, int foodWeight, int maxStep, double maxFoodWeight) {
         this.weight = weight;
         this.maxCellQuantity = foodWeight;
         this.maxStep = maxStep;
@@ -26,7 +26,7 @@ public class OrganismProperty {
         return weight;
     }
 
-    public double getMaxCellQuantity() {
+    public int getMaxCellQuantity() {
         return maxCellQuantity;
     }
 

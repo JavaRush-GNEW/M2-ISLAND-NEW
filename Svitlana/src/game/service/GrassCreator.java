@@ -1,6 +1,6 @@
 package game.service;
 
-import game.entity.plant.Grass;
+import game.entity.inhabitant.Grass;
 
 public class GrassCreator extends OrganismCreator{
     @Override

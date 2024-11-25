@@ -15,13 +15,10 @@ public class OrganismPropertyUtil {
 
     public static OrganismProperty readOrganismProp(Class<? extends Organism> aClass) throws IOException {
         String className = aClass.getSimpleName().toLowerCase();
-        //System.out.println(className);
         return new ObjectMapper().readValue(new File(PATH_TO_FILE + className + EXTENSION), OrganismProperty.class);
     }
 
     public static Map<Class<? extends Organism>, Integer> readNutritionInf(String fileName) throws IOException {
-        String path = PATH_TO_FILE + fileName;
-        System.out.println(path);
         return new YAMLMapper().readValue(new File(PATH_TO_FILE + fileName), Map.class);
     }
 }

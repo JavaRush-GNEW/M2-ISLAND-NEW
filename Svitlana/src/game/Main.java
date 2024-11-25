@@ -2,7 +2,7 @@ package game;
 
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import game.entity.GameProperty;
-import game.entity.animal.Duck;
+import game.entity.inhabitant.Duck;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import game.entity.Organism;
 import game.entity.OrganismProperty;
@@ -29,13 +29,13 @@ public class Main {
         System.out.println("=".repeat(20));
         System.out.println(OrganismPropertyUtil.readOrganismProp(Duck.class));
         System.out.println(GamePropertyUtil.readGameProp("game_property.xml").getSimulationTime());
-        System.out.println(GamePropertyUtil.readGameProp("game_property.xml").getAnimals());
+        System.out.println(GamePropertyUtil.readGameProp("game_property.xml").getInhabitants());
 
         System.out.println("=".repeat(20));
         System.out.println(new Duck().getProperties());
         System.out.println("*".repeat(20));
 
         GameProperty gameProperty = GamePropertyUtil.readGameProp("game_property.xml");
-        new Island(gameProperty.getAreaWidth(), gameProperty.getAreaHeight());
+        new Island().initialPopulation();
     }
 }

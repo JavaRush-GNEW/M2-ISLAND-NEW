@@ -1,26 +1,28 @@
-package game.entity.animal;
+package game.entity.inhabitant;
 
 import game.domain.Properties;
-import game.entity.island.Area;
 import game.entity.Organism;
 import game.entity.OrganismProperty;
+import game.entity.animal.Predator;
+import game.entity.island.Area;
 import game.utils.OrganismPropertyUtil;
 
 import java.io.IOException;
 import java.util.Map;
 
-@Properties(filename = "duck.json")
-public class Duck extends Herbivorous {
-    public Duck() {
+@Properties(filename = "wolf.json")
+public class Wolf extends Predator {
+    public Wolf() {
     }
 
     public static final OrganismProperty ORGANISM_PROPERTY;
     public static final Map<Class<? extends Organism>, Integer> NUTRITION_MAP;
 
+    //TODO: make NUTRITION_MAP an ORGANISM_PROPERTY field
     static {
         try {
-            ORGANISM_PROPERTY = OrganismPropertyUtil.readOrganismProp(Duck.class);
-            NUTRITION_MAP = OrganismPropertyUtil.readNutritionInf("duck_nutrition.yaml");
+            ORGANISM_PROPERTY = OrganismPropertyUtil.readOrganismProp(Wolf.class);
+            NUTRITION_MAP = OrganismPropertyUtil.readNutritionInf("wolf_nutrition.yaml");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -31,20 +33,16 @@ public class Duck extends Herbivorous {
         return ORGANISM_PROPERTY;
     }
 
-//    @Override
-//    public void populate() {
-//
-//    }
 
     @Override
     public void eat(Area area) {
-
+        System.out.println("Yammy meat");
     }
 
     @Override
-    public Duck reproduce() {
+    public Wolf reproduce() {
         boolean condition = true;
-        return condition ? new Duck() : null;
+        return condition ? new Wolf() : null;
     }
 
     @Override

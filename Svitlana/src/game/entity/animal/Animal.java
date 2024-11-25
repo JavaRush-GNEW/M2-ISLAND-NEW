@@ -1,17 +1,14 @@
 package game.entity.animal;
 
+import game.entity.Movable;
 import game.entity.OrganismProperty;
 import game.entity.island.Area;
 import game.entity.Direction;
 import game.entity.Organism;
-import game.utils.OrganismPropertyUtil;
-
-import java.io.IOException;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Animal implements Organism {
+public abstract class Animal implements Organism, Movable {
     private final String id;
     protected int healthPoint;
 

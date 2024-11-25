@@ -1,10 +1,11 @@
 <GameProperty>
-    <areaWidth>5</areaWidth>
-    <areaHeight>7</areaHeight>
+    <areaWidth>2</areaWidth>
+    <areaHeight>3</areaHeight>
     <simulationTime>2</simulationTime>
-    <animals>
-        <animal>Duck</animal>
-        <animal>Wolf</animal>
-        <animal>Caterpillar</animal>
-    </animals>
+    <inhabitants>
+        <inhabiant>game.entity.inhabitant.Duck</inhabiant>
+        <inhabitant>game.entity.inhabitant.Wolf</inhabitant>
+        <inhabitant>game.entity.inhabitant.Caterpillar</inhabitant>
+        <inhabitant>game.entity.inhabitant.Grass</inhabitant>
+    </inhabitants>
 </GameProperty>

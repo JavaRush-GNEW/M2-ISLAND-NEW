@@ -1,7 +1,6 @@
 package game.service;
 
-import game.entity.Organism;
-import game.entity.animal.Duck;
+import game.entity.inhabitant.Duck;
 
 public class DuckCreator extends OrganismCreator{
     @Override

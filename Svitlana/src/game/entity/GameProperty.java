@@ -6,7 +6,7 @@ public class GameProperty {
     private int areaWidth;
     private int areaHeight;
     private int simulationTime;
-    private List<String> animals;
+    private List<String> inhabitants;
 
     public GameProperty() {
     }
@@ -29,7 +29,7 @@ public class GameProperty {
         return simulationTime;
     }
 
-    public List<String> getAnimals() {
-        return animals;
+    public List<String> getInhabitants() {
+        return inhabitants;
     }
 }

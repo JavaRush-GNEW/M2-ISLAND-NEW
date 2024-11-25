@@ -1,6 +1,5 @@
 package game.entity;
 
-public interface Organism extends Movable, Reproducible {
-    //void getProperties();
-    //void populate();
+public interface Organism extends Reproducible {
+    OrganismProperty getProperties();
 }
