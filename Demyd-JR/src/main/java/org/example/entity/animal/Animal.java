@@ -3,12 +3,19 @@ package org.example.entity.animal;
 import org.example.entity.LivingEntity;
 
 public abstract class Animal extends LivingEntity {
-    protected int energy;
+    private final int maxMoveRadius;
+    private final String nameAnimal;
 
-//    public abstract void eat();
-//    public abstract void move();
-//    public abstract void reproduce();
-    public boolean isAlive(){
-        return energy > 0;
+    public Animal(String nameAnimal, int maxMove) {
+        this.nameAnimal = nameAnimal;
+        this.maxMoveRadius = maxMove;
+    }
+
+
+    public int getMaxMoveRadius() {
+        return maxMoveRadius;
+    }
+    public String getNameAnimal() {
+        return nameAnimal;
     }
 }

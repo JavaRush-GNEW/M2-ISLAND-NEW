@@ -1,38 +1,56 @@
 package org.example.entity.map;
 
 
+import org.example.entity.animal.herbivore.Horse;
+import org.example.entity.animal.predator.Wolf;
+import org.example.entity.plant.Cactus;
+
+import java.util.Random;
+
 public class Island {
+    private final Cell[][] grid;
     private final int width;
     private final int height;
-    private final Cell[][] grid;
 
     public Island(int width, int height) {
         this.width = width;
         this.height = height;
-        this.grid = new Cell[height][width];
+        this.grid = new Cell[width][height];
+        initializeIsland();
+    }
 
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+    private void initializeIsland() {
+        Random random = new Random();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 grid[i][j] = new Cell();
+
+
+                int numberOfEntities = random.nextInt(5); // 0–4 мешканців у клітинці
+                for (int k = 0; k < numberOfEntities; k++) {
+                    int entityType = random.nextInt(3);
+                    switch (entityType) {
+                        case 0 -> grid[i][j].addEntity(new Horse());
+                        case 1 -> grid[i][j].addEntity(new Wolf());
+                        case 2 -> grid[i][j].addEntity(new Cactus());
+                    }
+                }
             }
         }
     }
 
-    public Cell getCell(int x, int y) {
-        if (x >= 0 && x < width && y >= 0 && y < height) {
-            return grid[y][x];
-        }
-        throw new IndexOutOfBoundsException("Неправильні координати: x=" + x + ", y=" + y);
-    }
-
     public void displayIsland() {
-        System.out.println("Острів (ширина: " + width + ", висота: " + height + ")");
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                System.out.print("[" + grid[i][j].getHerbivores().size() + "] "); // Кількість тварин у клітині
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                System.out.print("[" + grid[i][j].getEntities().size() + "] ");
             }
             System.out.println();
         }
     }
+
+    public Cell getCell(int x, int y) {
+        return grid[x][y];
+    }
+
 
 }
