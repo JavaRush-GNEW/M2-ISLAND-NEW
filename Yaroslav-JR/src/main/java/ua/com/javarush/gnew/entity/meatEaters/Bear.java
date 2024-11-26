@@ -1,28 +1,22 @@
 package ua.com.javarush.gnew.entity.meatEaters;
 
-import ua.com.javarush.gnew.Main;
-import ua.com.javarush.gnew.entity.Animal;
 import ua.com.javarush.gnew.entity.Organism;
 import ua.com.javarush.gnew.entity.chewingGrass.*;
 import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
 
 import java.util.Iterator;
-import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Wolf extends MeatEaters {
+public class Bear extends MeatEaters{
 
-    private static final double MAX_WEIGHT = 58.0;
-    private static final double INITIAL_WEIGHT = 50.0;
-    private static final int MOVE_DISTANCE = 3;
+    private static final double MAX_WEIGHT = 580.0;
+    private static final double INITIAL_WEIGHT = 500.0;
+    private static final int MOVE_DISTANCE = 2;
 
-    public Wolf() {
-        super(30, INITIAL_WEIGHT);
+    public Bear() {
+        super(5, INITIAL_WEIGHT);
     }
-
-
     public void move(Cell currentCell, Island island, int currentX, int currentY) {
         int deltaX = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
         int deltaY = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
@@ -52,7 +46,6 @@ public class Wolf extends MeatEaters {
             isSatiated = false;
         }
     }
-
     public void eat(Cell cell) {
 
         Iterator<Organism> iterator = cell.getResidents().get(ChewingGrass.class).iterator();
@@ -65,21 +58,21 @@ public class Wolf extends MeatEaters {
             if (prey instanceof Sheep) {
                 chanceToEat = 70;
             } else if (prey instanceof Rabbit) {
-                chanceToEat = 60;
-            } else if (prey instanceof Horse) {
-                chanceToEat = 10;
-            } else if (prey instanceof Deer) {
-                chanceToEat = 15;
-            } else if (prey instanceof Mouse) {
                 chanceToEat = 80;
-            } else if (prey instanceof Goat) {
-                chanceToEat = 60;
-            } else if (prey instanceof Buffalo) {
-                chanceToEat = 10;
-            } else if (prey instanceof Boar) {
-                chanceToEat = 15;
-            } else if (prey instanceof Duck) {
+            } else if (prey instanceof Horse) {
                 chanceToEat = 40;
+            } else if (prey instanceof Deer) {
+                chanceToEat = 80;
+            } else if (prey instanceof Mouse) {
+                chanceToEat = 90;
+            } else if (prey instanceof Goat) {
+                chanceToEat = 70;
+            } else if (prey instanceof Buffalo) {
+                chanceToEat = 20;
+            } else if (prey instanceof Boar) {
+                chanceToEat = 50;
+            } else if (prey instanceof Duck) {
+                chanceToEat = 10;
             }
 
             if (ThreadLocalRandom.current().nextInt(100) < chanceToEat) {
@@ -92,4 +85,5 @@ public class Wolf extends MeatEaters {
 
         }
     }
+
 }

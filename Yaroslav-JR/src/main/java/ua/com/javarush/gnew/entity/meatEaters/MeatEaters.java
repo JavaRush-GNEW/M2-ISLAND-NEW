@@ -12,6 +12,7 @@ import java.util.Random;
 public abstract class MeatEaters extends Animal {
 
 
-
-
+    public MeatEaters(int maxCellResidents, double initialWeight) {
+        super(maxCellResidents, initialWeight);
+    }
 }

@@ -1,25 +1,21 @@
 package ua.com.javarush.gnew.entity.chewingGrass;
 
-import ua.com.javarush.gnew.entity.Animal;
 import ua.com.javarush.gnew.entity.Organism;
 import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
-import ua.com.javarush.gnew.entity.meatEaters.Wolf;
-import ua.com.javarush.gnew.entity.plant.Grass;
 
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Sheep extends ChewingGrass {
+public class Boar extends ChewingGrass{
 
-    private static final double MAX_WEIGHT = 85.0;
-    private static final double INITIAL_WEIGHT = 70.0;
-    private static final int MOVE_DISTANCE = 3;
+    private static final double MAX_WEIGHT = 450.0;
+    private static final double INITIAL_WEIGHT = 400.0;
+    private static final int MOVE_DISTANCE = 2;
 
-    public Sheep() {
-        super(140, INITIAL_WEIGHT);
+    public Boar() {
+        super(50, INITIAL_WEIGHT);
     }
-
 
     public void move(Cell currentCell, Island island, int currentX, int currentY) {
         int deltaX = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
