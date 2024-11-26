@@ -1,25 +1,22 @@
 package ua.com.javarush.gnew.entity.chewingGrass;
 
-import ua.com.javarush.gnew.entity.Animal;
 import ua.com.javarush.gnew.entity.Organism;
 import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
-import ua.com.javarush.gnew.entity.meatEaters.Wolf;
 import ua.com.javarush.gnew.entity.plant.Grass;
 
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Sheep extends ChewingGrass {
+public class Mouse extends ChewingGrass{
 
-    private static final double MAX_WEIGHT = 85.0;
-    private static final double INITIAL_WEIGHT = 70.0;
-    private static final int MOVE_DISTANCE = 3;
+    private static final double MAX_WEIGHT = 0.6;
+    private static final double INITIAL_WEIGHT = 0.5;
+    private static final int MOVE_DISTANCE = 1;
 
-    public Sheep() {
-        super(140, INITIAL_WEIGHT);
+    public Mouse() {
+        super(500, INITIAL_WEIGHT);
     }
-
 
     public void move(Cell currentCell, Island island, int currentX, int currentY) {
         int deltaX = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
@@ -47,6 +44,20 @@ public class Sheep extends ChewingGrass {
             isSatiated = true;
         } else {
             isSatiated = false;
+        }
+    }
+
+    @Override
+    public void eat(Cell cell) {
+
+        Iterator<Organism> iterator = cell.getResidents().get(Grass.class).iterator();
+
+        while (iterator.hasNext()) {
+            Organism prey = iterator.next();
+            prey.die();
+            iterator.remove();
+            this.setWeight(this.getWeight() + prey.getWeight() / 20);
+            break;
         }
     }
 }

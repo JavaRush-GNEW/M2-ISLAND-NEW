@@ -6,27 +6,32 @@ import ua.com.javarush.gnew.entity.island.Island;
 import java.util.Random;
 
 public abstract class Animal extends Organism {
-    protected static int lifePower = 50;
 
-    public static int getLifePower() {
-        return lifePower;
+
+
+    public boolean isSatiated = false;
+
+    public Animal(int maxCellResidents, double initialWeight) {
+        super(maxCellResidents, initialWeight);
     }
 
-    public  void move(Cell currentCell, Island island, int x, int y) {
-        lifePower -= 5;
-        if (lifePower <= 0) {
-            currentCell.removeAnimal(this);
-            return;
+
+    public boolean isSatiated() {
+        return isSatiated;
+    }
+
+    public void reproduce(Cell currentCell) {
+        this.checkSatiation();
+        if (!isSatiated) {
+            try {
+                Organism offspring = this.getClass().getDeclaredConstructor().newInstance();
+                synchronized (currentCell) {
+                    currentCell.add(offspring);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        Random random = new Random();
-        int deltaX = random.nextInt(4) - 2;
-        int deltaY = random.nextInt(4) - 2;
-        int newX = Math.max(0, Math.min(island.getField().length - 1, x + deltaX));
-        int newY = Math.max(0, Math.min(island.getField()[0].length - 1, y + deltaY));
-        currentCell.removeAnimal(this);
-        Cell newCell = island.getField()[newX][newY];
-        newCell.addAnimal(this);
     }
-
 
 }
