@@ -15,7 +15,7 @@ public abstract class ChewingGrass extends Animal {
     public ChewingGrass(int maxCellResidents, double initialWeight) {
         super(maxCellResidents, initialWeight);
     }
-
+    @Override
     public void eat(Cell cell) {
 
         Iterator<Organism> iterator = cell.getResidents().get(Grass.class).iterator();

@@ -17,7 +17,7 @@ public class Mouse extends ChewingGrass{
     public Mouse() {
         super(500, INITIAL_WEIGHT);
     }
-
+    @Override
     public void move(Cell currentCell, Island island, int currentX, int currentY) {
         int deltaX = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
         int deltaY = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);

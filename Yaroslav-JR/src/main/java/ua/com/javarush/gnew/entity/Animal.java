@@ -33,5 +33,11 @@ public abstract class Animal extends Organism {
             }
         }
     }
+    public void eat(Cell cell){
+
+    }
+    public void move(Cell currentCell, Island island, int currentX, int currentY){
+
+    }
 
 }
