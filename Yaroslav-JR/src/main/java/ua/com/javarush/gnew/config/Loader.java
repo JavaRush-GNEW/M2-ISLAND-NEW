@@ -1,5 +1,6 @@
 package ua.com.javarush.gnew.config;
 
+import ua.com.javarush.gnew.entity.Animal;
 import ua.com.javarush.gnew.entity.Organism;
 import ua.com.javarush.gnew.entity.chewingGrass.*;
 import ua.com.javarush.gnew.entity.island.Cell;
@@ -8,7 +9,9 @@ import ua.com.javarush.gnew.entity.meatEaters.*;
 import ua.com.javarush.gnew.entity.plant.Grass;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Loader {
@@ -39,7 +42,7 @@ public class Loader {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                HashMap<Class<? extends Organism>, Set<Organism>> residents = new HashMap<>();
+                ConcurrentHashMap<Class<? extends Organism>, Set<Organism>> residents = new ConcurrentHashMap<>();
                 cells[i][j] = new Cell(residents);
             }
         }
@@ -101,4 +104,32 @@ public class Loader {
             e.printStackTrace();
         }
     }
+
+    public static void processAnimals(Island island, int startX, int endX) {
+        for (int x = startX; x < endX; x++) {
+            for (int y = 0; y < island.getHeight(); y++) {
+                Cell cell = island.getField()[x][y];
+                synchronized (cell) {
+
+                    ConcurrentHashMap<Class<? extends Organism>, Set<Organism>> snapshot = new ConcurrentHashMap<>(cell.getResidents());
+
+                    int finalX = x;
+                    int finalY = y;
+                    snapshot.forEach((type, organisms) -> {
+                        Iterator<Organism> iterator = organisms.iterator();
+                        while (iterator.hasNext()) {
+                            Organism organism = iterator.next();
+                            if (organism instanceof Animal) {
+                                Animal animal = (Animal) organism;
+                                animal.eat(cell);
+                                animal.reproduce(cell);
+                                animal.move(cell, island, finalX, finalY);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
 }

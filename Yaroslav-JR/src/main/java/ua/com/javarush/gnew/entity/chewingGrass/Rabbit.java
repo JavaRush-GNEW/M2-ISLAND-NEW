@@ -17,7 +17,7 @@ public class Rabbit extends ChewingGrass {
     public Rabbit() {
         super(150, INITIAL_WEIGHT);
     }
-
+    @Override
     public void move(Cell currentCell, Island island, int currentX, int currentY) {
         int deltaX = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
         int deltaY = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);

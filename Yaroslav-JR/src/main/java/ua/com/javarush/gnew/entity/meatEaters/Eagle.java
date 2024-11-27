@@ -6,6 +6,7 @@ import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
 
 import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Eagle extends MeatEaters {
@@ -18,6 +19,7 @@ public class Eagle extends MeatEaters {
     public Eagle() {
         super(20, INITIAL_WEIGHT);
     }
+    @Override
     public void move(Cell currentCell, Island island, int currentX, int currentY) {
         int deltaX = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
         int deltaY = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
@@ -47,9 +49,15 @@ public class Eagle extends MeatEaters {
             isSatiated = false;
         }
     }
+    @Override
     public void eat(Cell cell) {
 
-        Iterator<Organism> iterator = cell.getResidents().get(ChewingGrass.class).iterator();
+        Set<Organism> preySet = cell.getResidents().get(ChewingGrass.class);
+        if (preySet == null || preySet.isEmpty()) {
+            return;
+        }
+
+        Iterator<Organism> iterator = preySet.iterator();
 
         while (iterator.hasNext()) {
             Organism prey = iterator.next();
