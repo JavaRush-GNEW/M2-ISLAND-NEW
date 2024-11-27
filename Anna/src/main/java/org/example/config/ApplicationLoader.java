@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class ApplicationLoader {
+    private static final int GAME_FIELD_WIDTH = 5;
+    private static final int GAME_FIELD_HEIGHT = 5;
     private static ApplicationLoader INSTANCE;
 
     private ApplicationLoader() {
@@ -23,7 +25,7 @@ public class ApplicationLoader {
     ApplicationContext applicationContext = ApplicationContext.getInstance();
 
     public ApplicationContext init() {
-        initGameField(5, 5);
+        initGameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
         return applicationContext;
     }
 
@@ -33,10 +35,11 @@ public class ApplicationLoader {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                HashMap<Class<? extends Organism>, Set<Organism>> residents = new HashMap<>();
+                HashMap<Class<? extends Organism>, Set<Organism>> residents = OrganismFactory.createResidents();
                 cells[i][j] = new Cell(residents);
             }
         }
         this.applicationContext.setGameField(gameField);
     }
+
 }

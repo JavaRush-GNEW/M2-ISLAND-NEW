@@ -26,8 +26,12 @@ public class Cell {
 
     @Override
     public String toString() {
-        return "Cell{" +
-                "residents=" + residents +
-                '}';
+        StringBuilder sb = new StringBuilder("Cell residents:\n");
+        residents.forEach((key, value) -> sb.append(key.getSimpleName())
+                .append(": ")
+                .append(value.size())
+                .append("\n")
+        );
+        return sb.toString();
     }
 }
