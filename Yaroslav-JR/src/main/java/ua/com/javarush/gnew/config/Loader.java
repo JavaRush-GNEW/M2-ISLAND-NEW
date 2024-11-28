@@ -89,10 +89,8 @@ public class Loader {
 
     private <T extends Organism> void addAnimalsOfType(Cell cell, Class<T> animalType) {
         try {
-
             Organism sampleAnimal = animalType.getDeclaredConstructor().newInstance();
             int maxResidents = sampleAnimal.getMaxCellResidents();
-
 
             int numberOfAnimals = ThreadLocalRandom.current().nextInt(0, maxResidents + 1);
 
@@ -105,31 +103,6 @@ public class Loader {
         }
     }
 
-    public static void processAnimals(Island island, int startX, int endX) {
-        for (int x = startX; x < endX; x++) {
-            for (int y = 0; y < island.getHeight(); y++) {
-                Cell cell = island.getField()[x][y];
-                synchronized (cell) {
 
-                    ConcurrentHashMap<Class<? extends Organism>, Set<Organism>> snapshot = new ConcurrentHashMap<>(cell.getResidents());
-
-                    int finalX = x;
-                    int finalY = y;
-                    snapshot.forEach((type, organisms) -> {
-                        Iterator<Organism> iterator = organisms.iterator();
-                        while (iterator.hasNext()) {
-                            Organism organism = iterator.next();
-                            if (organism instanceof Animal) {
-                                Animal animal = (Animal) organism;
-                                animal.eat(cell);
-                                animal.reproduce(cell);
-                                animal.move(cell, island, finalX, finalY);
-                            }
-                        }
-                    });
-                }
-            }
-        }
-    }
 
 }

@@ -6,6 +6,7 @@ import ua.com.javarush.gnew.entity.island.Island;
 import ua.com.javarush.gnew.entity.plant.Grass;
 
 import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Rabbit extends ChewingGrass {
@@ -18,24 +19,8 @@ public class Rabbit extends ChewingGrass {
         super(150, INITIAL_WEIGHT);
     }
     @Override
-    public void move(Cell currentCell, Island island, int currentX, int currentY) {
-        int deltaX = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
-        int deltaY = ThreadLocalRandom.current().nextInt(-MOVE_DISTANCE, MOVE_DISTANCE + 1);
-
-        int newX = currentX + deltaX;
-        int newY = currentY + deltaY;
-
-        newX = Math.max(0, Math.min(newX, island.getWidth() - 1));
-        newY = Math.max(0, Math.min(newY, island.getHeight() - 1));
-
-        if (island.getField()[newX][newY].add(this)) {
-            Iterator<Organism> iterator = currentCell.getResidents().get(this.getClass()).iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next().equals(this)) {
-                    iterator.remove();
-                }
-            }
-        }
+    protected int getMoveDistance() {
+        return MOVE_DISTANCE;
     }
 
     @Override
@@ -49,6 +34,8 @@ public class Rabbit extends ChewingGrass {
 
     @Override
     public void eat(Cell cell) {
+        Set<Organism> grassSet = cell.getResidents().get(Grass.class);
+        if (grassSet == null || grassSet.isEmpty()) return;
 
         Iterator<Organism> iterator = cell.getResidents().get(Grass.class).iterator();
 
