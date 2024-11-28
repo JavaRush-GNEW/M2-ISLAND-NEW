@@ -3,17 +3,21 @@ package ua.com.javarush.gnew.entity;
 import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
 
+import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Organism {
 
 
 
-    public boolean isSatiated = false;
+    public boolean isSatiated;
 
     public Animal(int maxCellResidents, double initialWeight) {
         super(maxCellResidents, initialWeight);
     }
+
+    protected abstract int getMoveDistance();
 
 
     public boolean isSatiated() {
@@ -22,7 +26,7 @@ public abstract class Animal extends Organism {
 
     public void reproduce(Cell currentCell) {
         this.checkSatiation();
-        if (!isSatiated) {
+        if (isSatiated) {
             try {
                 Organism offspring = this.getClass().getDeclaredConstructor().newInstance();
                 synchronized (currentCell) {
@@ -36,8 +40,31 @@ public abstract class Animal extends Organism {
     public void eat(Cell cell){
 
     }
-    public void move(Cell currentCell, Island island, int currentX, int currentY){
 
-    }
+        public void move(Cell currentCell, Island island, int currentX, int currentY) {
+            int moveDistance = getMoveDistance();
+
+            int deltaX = ThreadLocalRandom.current().nextInt(-moveDistance, moveDistance + 1);
+            int deltaY = ThreadLocalRandom.current().nextInt(-moveDistance, moveDistance + 1);
+
+            int newX = Math.max(0, Math.min(currentX + deltaX, island.getWidth() - 1));
+            int newY = Math.max(0, Math.min(currentY + deltaY, island.getHeight() - 1));
+
+            synchronized (island.getField()[newX][newY]) {
+                if (island.getField()[newX][newY].add(this)) {
+
+                    synchronized (currentCell) {
+                        Iterator<Organism> iterator = currentCell.getResidents().get(this.getClass()).iterator();
+                        while (iterator.hasNext()) {
+                            if (iterator.next().equals(this)) {
+                                iterator.remove();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
 }

@@ -14,8 +14,6 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-import static ua.com.javarush.gnew.config.Loader.processAnimals;
-
 public class Main {
     public static void main(String[] args) {
 
@@ -27,11 +25,12 @@ public class Main {
         printAnimalCounts(animalCounts, "Initial count of animals on the island:");
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
+
         executorService.execute(() -> processAnimals(island, 0, island.getWidth() / 2));
         executorService.execute(() -> processAnimals(island, island.getWidth() / 2, island.getWidth()));
 
         ScheduledExecutorService monitorService = Executors.newSingleThreadScheduledExecutor();
-        monitorService.scheduleAtFixedRate(() -> {
+        monitorService.scheduleWithFixedDelay(() -> {
             ConcurrentHashMap<Class<? extends Organism>, Integer> currentCounts = countAnimals(island);
             printAnimalCounts(currentCounts, "Current animal counts:");
         }, 0, 1, TimeUnit.SECONDS);
@@ -42,7 +41,13 @@ public class Main {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
         monitorService.shutdown();
+        try {
+            monitorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     private static ConcurrentHashMap<Class<? extends Organism>, Integer> countAnimals(Island island) {
@@ -63,6 +68,28 @@ public class Main {
         System.out.println(message);
         for (ConcurrentHashMap.Entry<Class<? extends Organism>, Integer> entry : animalCounts.entrySet()) {
             System.out.println("Animal: " + entry.getKey().getSimpleName() + ", Count: " + entry.getValue());
+        }
+    }
+
+    private static void processAnimals(Island island, int startX, int endX) {
+        for (int x = startX; x < endX; x++) {
+            for (int y = 0; y < island.getHeight(); y++) {
+                Cell cell = island.getField()[x][y];
+                synchronized (cell) {
+                    int finalX = x;
+                    int finalY = y;
+                    cell.getResidents().forEach((type, organisms) -> {
+                        for (Organism organism : organisms) {
+                            if (organism instanceof Animal) {
+                                Animal animal = (Animal) organism;
+                                animal.eat(cell);
+                                animal.reproduce(cell);
+                                animal.move(cell, island, finalX, finalY);
+                            }
+                        }
+                    });
+                }
+            }
         }
     }
 }
