@@ -1,24 +1,41 @@
 package org.example;
 
 
+
 import org.example.entity.map.Cell;
 import org.example.entity.map.Island;
 
+import static org.example.entity.animal.Animal.moveAllAnimals;
 
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        Island island = new Island(5, 5);
+        int width = 5;
+        int height = 5;
+        Island island = new Island(width, height);
 
-        island.displayIsland();
+        System.out.println("Початковий стан острова:");
+        printIsland(island.getGrid());
 
-        Cell cell = island.getCell(0, 0);
-        System.out.println("Herbivores: " + cell.getHerbivores().size());
-        System.out.println("Predators: " + cell.getPredators().size());
-        System.out.println("Plants: " + cell.getPlants().size());
+        // Переміщення тварин
+        moveAllAnimals(island.getGrid());
+
+        // Вивід стану після переміщення
+        System.out.println("\nСтан острова після переміщення:");
+        printIsland(island.getGrid());
 
 
+        System.out.println("_________________________");
+
+    }
+    private static void printIsland(Cell[][] island) {
+        for (Cell[] row : island) {
+            for (Cell cell : row) {
+                System.out.print(cell + " ");
+            }
+            System.out.println();
+        }
     }
 }
