@@ -22,7 +22,7 @@ public class Loader {
     private Loader() {
     }
 
-    public static synchronized Loader getINSTANCE() {
+    public static Loader getINSTANCE() {
         if (INSTANCE == null) {
             INSTANCE = new Loader();
         }
@@ -30,7 +30,7 @@ public class Loader {
     }
 
     public Context init() {
-        initIsland(5, 5);
+        initIsland(100, 20);
         populateIslandWithAnimals();
         return context;
     }

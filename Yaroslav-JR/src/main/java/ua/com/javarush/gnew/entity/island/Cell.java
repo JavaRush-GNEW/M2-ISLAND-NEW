@@ -21,7 +21,7 @@ public class Cell {
     public Map<Class<? extends Organism>, Set<Organism>> getResidents() {
         return residents;
     }
-    public synchronized boolean add(Organism organism){
+    public boolean add(Organism organism){
         Class<? extends Organism> organismClass = organism.getClass();
         residents.putIfAbsent(organismClass, ConcurrentHashMap.newKeySet());
         return residents.get(organismClass).add(organism);

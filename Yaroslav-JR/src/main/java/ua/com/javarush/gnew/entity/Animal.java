@@ -29,9 +29,8 @@ public abstract class Animal extends Organism {
         if (isSatiated) {
             try {
                 Organism offspring = this.getClass().getDeclaredConstructor().newInstance();
-                synchronized (currentCell) {
                     currentCell.add(offspring);
-                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -53,7 +52,6 @@ public abstract class Animal extends Organism {
             synchronized (island.getField()[newX][newY]) {
                 if (island.getField()[newX][newY].add(this)) {
 
-                    synchronized (currentCell) {
                         Iterator<Organism> iterator = currentCell.getResidents().get(this.getClass()).iterator();
                         while (iterator.hasNext()) {
                             if (iterator.next().equals(this)) {
@@ -61,7 +59,7 @@ public abstract class Animal extends Organism {
                                 break;
                             }
                         }
-                    }
+
                 }
             }
         }
