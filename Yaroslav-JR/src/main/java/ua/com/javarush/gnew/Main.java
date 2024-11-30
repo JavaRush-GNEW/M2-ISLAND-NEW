@@ -22,7 +22,7 @@ public class Main {
         Island island = context.getIsland();
 
         ConcurrentHashMap<Class<? extends Organism>, Integer> animalCounts = countAnimals(island);
-        printAnimalCounts(animalCounts, "Initial count of animals on the island:");
+        printAnimalCounts(animalCounts, "\nInitial count of animals on the island:\n");
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
@@ -32,18 +32,20 @@ public class Main {
         ScheduledExecutorService monitorService = Executors.newSingleThreadScheduledExecutor();
         monitorService.scheduleWithFixedDelay(() -> {
             ConcurrentHashMap<Class<? extends Organism>, Integer> currentCounts = countAnimals(island);
-            printAnimalCounts(currentCounts, "Current animal counts:");
-        }, 0, 1, TimeUnit.SECONDS);
+            printAnimalCounts(currentCounts, "\nCurrent animal counts:\n");
+        }, 0, 2, TimeUnit.SECONDS);
 
-        executorService.shutdown();
         try {
-            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            Thread.sleep(10_000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
-        monitorService.shutdown();
+        executorService.shutdownNow();
+        monitorService.shutdownNow();
+
         try {
+            executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
             monitorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -55,10 +57,8 @@ public class Main {
         for (int i = 0; i < island.getWidth(); i++) {
             for (int j = 0; j < island.getHeight(); j++) {
                 Cell cell = island.getField()[i][j];
-                synchronized (cell) {
                     cell.getResidents().forEach((animalClass, organisms) ->
                             animalCounts.merge(animalClass, organisms.size(), Integer::sum));
-                }
             }
         }
         return animalCounts;
@@ -75,7 +75,6 @@ public class Main {
         for (int x = startX; x < endX; x++) {
             for (int y = 0; y < island.getHeight(); y++) {
                 Cell cell = island.getField()[x][y];
-                synchronized (cell) {
                     int finalX = x;
                     int finalY = y;
                     cell.getResidents().forEach((type, organisms) -> {
@@ -88,7 +87,7 @@ public class Main {
                             }
                         }
                     });
-                }
+
             }
         }
     }
