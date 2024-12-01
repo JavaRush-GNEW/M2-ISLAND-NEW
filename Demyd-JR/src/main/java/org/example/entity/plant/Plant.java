@@ -13,4 +13,8 @@ public abstract class Plant extends LivingEntity {
         this.MAX_PLANT_CELL = maxPlantCell;
     }
 
+    public String getNamePlant() {
+        return NAME_PLANT;
+    }
+
 }

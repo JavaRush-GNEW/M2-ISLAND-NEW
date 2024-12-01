@@ -1,7 +1,11 @@
 package org.example.entity;
 
 
-public abstract class LivingEntity {
+import org.example.entity.animal.interfaces.Reproduction;
 
+public abstract class LivingEntity implements Reproduction{
+    @Override
+    public void Reproduction() {
 
+    }
 }

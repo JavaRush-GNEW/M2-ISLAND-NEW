@@ -5,21 +5,15 @@ import org.example.entity.animal.herbivore.*;
 
 import java.util.Map;
 
-
-public class Wolf extends Predator{
+public class Fox extends Predator{
     private static final Map<Class<? extends Animal>, Integer> HUNTING_CHANCES = Map.of(
-            Horse.class, 10,
-            Rabbit.class, 60,
-            Boar.class,15,
-            Buffalo.class,10,
-            Deer.class,15,
-            Duck.class,40,
-            Goat.class,60,
-            Mouse.class,80,
-            Sheep.class,70
+            Rabbit.class, 70,
+            Duck.class,60,
+            Mouse.class,90,
+            Geese.class,40
     );
-    public Wolf() {
-        super("Wolf", 50,30,3,8);
+    public Fox() {
+        super("Fox",8,30,2,2);
     }
 
     @Override
