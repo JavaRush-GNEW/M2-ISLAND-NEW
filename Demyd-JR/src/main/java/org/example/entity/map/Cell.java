@@ -4,6 +4,7 @@ package org.example.entity.map;
 
 import org.example.entity.animal.Animal;
 import org.example.entity.animal.herbivore.Herbivore;
+import org.example.entity.animal.interfaces.Reproduction;
 import org.example.entity.animal.predator.Predator;
 import org.example.entity.plant.Plant;
 
@@ -16,8 +17,19 @@ public class Cell {
     private List<Animal> entities = new ArrayList<>();
     private List<Plant> plants = new ArrayList<>();
 
-    public void addEntity(Animal entity) {
-        entities.add(entity);
+    public boolean addEntity(Animal animal) {
+        // Count animal per cell //
+        long currentCount = entities.stream()
+                .filter(entity -> entity.getClass() == animal.getClass())
+                .count();
+        // Our test //
+        if (currentCount < animal.getMaxPerCellAnimal()) {
+            entities.add(animal);
+            return true;
+        } else {
+            System.out.println("Не можна додати " + animal.getClass().getSimpleName() + " у клітинку: досягнуто максимум.");
+            return false;
+        }
     }
     public List<Animal> getEntities(){
         return entities;

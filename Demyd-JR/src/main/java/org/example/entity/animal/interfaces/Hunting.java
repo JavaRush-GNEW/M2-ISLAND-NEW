@@ -30,13 +30,18 @@ public interface Hunting {
 
             if (RANDOM.nextInt(100) <= huntingChance) {
                 currentCell.getEntities().remove(prey);
+                increaseSaturation(1);
 //                System.out.println(getClass().getSimpleName() + " вполював " + prey.getClass().getSimpleName());
             } else {
+                decreaseSaturation(1);
 //                System.out.println(getClass().getSimpleName() + " не зміг вполювати " + prey.getClass().getSimpleName());
             }
         } else {
+            decreaseSaturation(1);
 //            System.out.println(getClass().getSimpleName() + " не знайшов жертви у клітинці.");
         }
     };
+    void increaseSaturation(double amount);
+    void decreaseSaturation(double amount);
 
 }

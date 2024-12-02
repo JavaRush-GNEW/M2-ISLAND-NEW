@@ -26,4 +26,13 @@ public class Bear extends Predator{
     public Map<Class<? extends Animal>, Integer> getHuntingChances() {
         return HUNTING_CHANCES;
     }
+    @Override
+    public boolean canReproduce() {
+        return getSaturation() > (MAX_SATURATION / 2);
+    }
+
+    @Override
+    public Animal createNewAnimal() {
+        return new Bear();
+    }
 }

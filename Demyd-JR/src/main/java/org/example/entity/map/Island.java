@@ -5,6 +5,7 @@ import org.example.entity.animal.Animal;
 import org.example.entity.animal.herbivore.Herbivore;
 import org.example.entity.animal.interfaces.EatingPlant;
 import org.example.entity.animal.interfaces.Hunting;
+import org.example.entity.animal.interfaces.Reproduction;
 import org.example.entity.animal.predator.Predator;
 import org.example.entity.plant.Plant;
 
@@ -44,7 +45,12 @@ public class Island {
 
         System.out.println("_________________________");
         printAnimalStatisticsSimple("Після полювання");
-
+        System.out.println("_________________________");
+        System.out.println("Початок розмноження");
+        System.out.println("_________________________");
+        handleReproduction();
+        System.out.println("_________________________");
+        printAnimalStatisticsSimple("Після розмноження");
     }
 
 
@@ -61,7 +67,7 @@ public class Island {
 
                 for (Animal animal : animalsToMove) {
                     // Random steps 0 -> maxStep
-                    int steps = new Random().nextInt(animal.getMAX_MOVE_SPEED() + 1);
+                    int steps = new Random().nextInt(animal.getMaxStep() + 1);
                     int[] newCoordinates = getTargetCell(island, i, j, steps);
 
 
@@ -141,27 +147,61 @@ public class Island {
         int herbivoreCount = 0;
         int plantCount = 0;
 
-
         for (Cell[] row : getGRID()) {
             for (Cell cell : row) {
-                // Проходимо всі тварини у клітинці
-                for (Animal animal : cell.getEntities()) {
-                    if (animal instanceof Predator) {
-                        predatorCount++;
-                    } else if (animal instanceof Herbivore) {
-                        herbivoreCount++;
-                    }
-                }
-                plantCount += cell.getPlants().stream().filter(plant -> plant instanceof Plant).count();
+                // Використовуємо stream для підрахунку тварин і рослин
+                long predatorsInCell = cell.getEntities().stream().filter(animal -> animal instanceof Predator).count();
+                long herbivoresInCell = cell.getEntities().stream().filter(animal -> animal instanceof Herbivore).count();
+                long plantsInCell = cell.getPlants().stream().filter(plant -> plant instanceof Plant).count();
+
+                predatorCount += predatorsInCell;
+                herbivoreCount += herbivoresInCell;
+                plantCount += plantsInCell;
             }
         }
 
-        // Вивід результату
+        // Виведення статистики
         System.out.println(message);
         System.out.println("Кількість Predators: " + predatorCount);
         System.out.println("Кількість Herbivores: " + herbivoreCount);
         System.out.println("Кількість Plants: " + plantCount);
     }
+
+
+    public void handleReproduction() {
+        int successfulReproductions = 0;
+        int failedReproductions = 0;
+
+        for (Cell[] row : getGRID()) {
+            for (Cell cell : row) {
+                List<Animal> animals = new ArrayList<>(cell.getEntities()); // Копія списку
+                for (Animal animal : animals) {
+                    if (animal instanceof Reproduction) {
+                        boolean isSaturationEnough = animal.getSaturation() > animal.getMaxSaturation() / 2;
+
+                        if (isSaturationEnough) {
+                            // Проводимо розмноження
+
+                            ((Reproduction) animal).reproduce(cell);
+                            successfulReproductions++;
+                        } else {
+                            failedReproductions++;
+                            if (!isSaturationEnough) {
+//                                           System.out.println(animal.getClass().getSimpleName() + " не зміг розмножитися через низький рівень насичення");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Виведення статистики
+        System.out.println("Результати розмноження:");
+        System.out.println("Успішні розмноження: " + successfulReproductions);
+        System.out.println("Невдалі спроби розмноження: " + failedReproductions);
+    }
+
+
 
 }
 
