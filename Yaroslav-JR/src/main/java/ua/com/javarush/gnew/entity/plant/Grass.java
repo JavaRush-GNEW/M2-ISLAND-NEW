@@ -10,6 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Grass extends Organism {
     private static final double INITIAL_WEIGHT = 1.0;
     public Grass() {
-        super(200, INITIAL_WEIGHT);
+        super(2000, INITIAL_WEIGHT);
     }
 }

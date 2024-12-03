@@ -6,6 +6,7 @@ import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -37,34 +38,35 @@ public class Python extends MeatEaters{
     @Override
     public void eat(Cell cell) {
 
-        Set<Organism> preySet = cell.getResidents().get(ChewingGrass.class);
-        if (preySet == null || preySet.isEmpty()) {
-            return;
-        }
+        Map<Class<? extends Organism>, Integer> preyTypes = Map.of(
 
-        Iterator<Organism> iterator = preySet.iterator();
+                Mouse.class, 40,
+                Rabbit.class, 20,
+                Fox.class, 15,
+                Duck.class, 10
+        );
 
-        while (iterator.hasNext()) {
-            Organism prey = iterator.next();
 
-            int chanceToEat = 0;
+        for (Map.Entry<Class<? extends Organism>, Integer> entry : preyTypes.entrySet()) {
+            Class<? extends Organism> preyClass = entry.getKey();
+            int chanceToEat = entry.getValue();
 
-            if (prey instanceof Rabbit) {
-                chanceToEat = 20;
-            } else if (prey instanceof Mouse) {
-                chanceToEat = 40;
-            } else if (prey instanceof Duck) {
-                chanceToEat = 10;
+            Set<Organism> preySet = cell.getResidents().get(preyClass);
+            if (preySet == null || preySet.isEmpty()) continue;
+
+            Iterator<Organism> iterator = preySet.iterator();
+
+            while (iterator.hasNext()) {
+                Organism prey = iterator.next();
+
+
+                if (ThreadLocalRandom.current().nextInt(100) < chanceToEat) {
+                    prey.die();
+                    iterator.remove();
+                    this.setWeight(this.getWeight() + prey.getWeight());
+                    return;
+                }
             }
-
-            if (ThreadLocalRandom.current().nextInt(100) < chanceToEat) {
-
-                prey.die();
-                iterator.remove();
-                this.setWeight(this.getWeight() + prey.getWeight() / 2);
-                break;
-            }
-
         }
     }
 

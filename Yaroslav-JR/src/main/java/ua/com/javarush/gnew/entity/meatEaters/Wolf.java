@@ -7,10 +7,7 @@ import ua.com.javarush.gnew.entity.chewingGrass.*;
 import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
 
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Wolf extends MeatEaters {
@@ -38,46 +35,39 @@ public class Wolf extends MeatEaters {
     @Override
     public void eat(Cell cell) {
 
-        Set<Organism> preySet = cell.getResidents().get(ChewingGrass.class);
-        if (preySet == null || preySet.isEmpty()) {
-            return;
-        }
+        Map<Class<? extends Organism>, Integer> preyTypes = Map.of(
+                Sheep.class, 70,
+                Mouse.class, 80,
+                Rabbit.class, 60,
+                Deer.class, 15,
+                Horse.class, 10,
+                Goat.class, 60,
+                Boar.class, 15,
+                Buffalo.class, 10,
+                Duck.class, 40
+        );
 
-        Iterator<Organism> iterator = preySet.iterator();
 
-        while (iterator.hasNext()) {
-            Organism prey = iterator.next();
+        for (Map.Entry<Class<? extends Organism>, Integer> entry : preyTypes.entrySet()) {
+            Class<? extends Organism> preyClass = entry.getKey();
+            int chanceToEat = entry.getValue();
 
-            int chanceToEat = 0;
+            Set<Organism> preySet = cell.getResidents().get(preyClass);
+            if (preySet == null || preySet.isEmpty()) continue;
 
-            if (prey instanceof Sheep) {
-                chanceToEat = 70;
-            } else if (prey instanceof Rabbit) {
-                chanceToEat = 60;
-            } else if (prey instanceof Horse) {
-                chanceToEat = 10;
-            } else if (prey instanceof Deer) {
-                chanceToEat = 15;
-            } else if (prey instanceof Mouse) {
-                chanceToEat = 80;
-            } else if (prey instanceof Goat) {
-                chanceToEat = 60;
-            } else if (prey instanceof Buffalo) {
-                chanceToEat = 10;
-            } else if (prey instanceof Boar) {
-                chanceToEat = 15;
-            } else if (prey instanceof Duck) {
-                chanceToEat = 40;
+            Iterator<Organism> iterator = preySet.iterator();
+
+            while (iterator.hasNext()) {
+                Organism prey = iterator.next();
+
+
+                if (ThreadLocalRandom.current().nextInt(100) < chanceToEat) {
+                    prey.die();
+                    iterator.remove();
+                    this.setWeight(this.getWeight() + prey.getWeight() / 2);
+                    return;
+                }
             }
-
-            if (ThreadLocalRandom.current().nextInt(100) < chanceToEat) {
-
-                prey.die();
-                iterator.remove();
-                this.setWeight(this.getWeight() + prey.getWeight() / 2);
-                break;
-            }
-
         }
     }
 }
