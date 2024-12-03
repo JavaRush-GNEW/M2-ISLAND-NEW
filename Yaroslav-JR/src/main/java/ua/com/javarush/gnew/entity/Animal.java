@@ -26,7 +26,8 @@ public abstract class Animal extends Organism {
 
     public void reproduce(Cell currentCell) {
         this.checkSatiation();
-        if (isSatiated) {
+        int currentCount = currentCell.getResidents().get(this.getClass()).size();
+        if (isSatiated && this.getMaxCellResidents() > currentCount) {
             try {
                 Organism offspring = this.getClass().getDeclaredConstructor().newInstance();
                     currentCell.add(offspring);
@@ -40,7 +41,7 @@ public abstract class Animal extends Organism {
 
     }
 
-        public void move(Cell currentCell, Island island, int currentX, int currentY) {
+    public void move(Cell currentCell, Island island, int currentX, int currentY) {
             int moveDistance = getMoveDistance();
 
             int deltaX = ThreadLocalRandom.current().nextInt(-moveDistance, moveDistance + 1);
@@ -49,7 +50,6 @@ public abstract class Animal extends Organism {
             int newX = Math.max(0, Math.min(currentX + deltaX, island.getWidth() - 1));
             int newY = Math.max(0, Math.min(currentY + deltaY, island.getHeight() - 1));
 
-            synchronized (island.getField()[newX][newY]) {
                 if (island.getField()[newX][newY].add(this)) {
 
                         Iterator<Organism> iterator = currentCell.getResidents().get(this.getClass()).iterator();
@@ -61,8 +61,7 @@ public abstract class Animal extends Organism {
                         }
 
                 }
-            }
-        }
 
+    }
 
 }
