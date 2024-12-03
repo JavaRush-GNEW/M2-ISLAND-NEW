@@ -43,13 +43,6 @@ public class Duck extends ChewingGrass{
 
         boolean hasEaten = false;
 
-        while (grassIterator.hasNext() && !hasEaten) {
-            Organism prey = grassIterator.next();
-            prey.die();
-            grassIterator.remove();
-            this.setWeight(this.getWeight() + prey.getWeight() / 10);
-            hasEaten = true;
-        }
 
         while (caterpillarIterator.hasNext() && !hasEaten) {
             Organism prey = caterpillarIterator.next();
@@ -60,5 +53,15 @@ public class Duck extends ChewingGrass{
                 hasEaten = true;
             }
         }
+
+        while (grassIterator.hasNext() && !hasEaten) {
+            Organism prey = grassIterator.next();
+            prey.die();
+            grassIterator.remove();
+            this.setWeight(this.getWeight() + prey.getWeight() / 10);
+            hasEaten = true;
+        }
+
+
     }
 }
