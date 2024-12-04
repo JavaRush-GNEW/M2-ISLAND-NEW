@@ -13,19 +13,20 @@ import java.util.Map;
 
 @Properties(filename = "caterpillar.json")
 public class Caterpillar extends Herbivorous {
-    public Caterpillar() {
-    }
 
     public static final OrganismProperty ORGANISM_PROPERTY;
     public static final Map<String, Integer> NUTRITION_MAP;
 
     static {
         try {
-            ORGANISM_PROPERTY = OrganismPropertyUtil.readOrganismProp(Duck.class);
-            NUTRITION_MAP = OrganismPropertyUtil.readNutritionInf("duck_nutrition.yaml");
+            ORGANISM_PROPERTY = OrganismPropertyUtil.readOrganismProp(Caterpillar.class);
+            NUTRITION_MAP = OrganismPropertyUtil.readNutritionInf("caterpillar_nutrition.yaml");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Caterpillar() {
     }
 
     @Override
@@ -39,14 +40,19 @@ public class Caterpillar extends Herbivorous {
     }
 
     @Override
+    public Map<String, Integer> getNutritionMap() {
+        return NUTRITION_MAP;
+    }
+
+    @Override
     public String getImage() {
         return "\uD83D\uDC1B";
     }
 
-    @Override
-    public void eat(Area area) {
-        //System.out.println("Caterpillar: Yammy grass");
-    }
+//    @Override
+//    public void eat(Area area) {
+//        //System.out.println("Caterpillar: Yammy grass");
+//    }
 
     @Override
     public Animal reproduce() {

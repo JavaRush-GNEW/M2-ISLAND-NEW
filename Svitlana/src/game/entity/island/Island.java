@@ -1,6 +1,5 @@
 package game.entity.island;
 
-import com.ctc.wstx.exc.WstxOutputException;
 import game.entity.GameProperty;
 import game.entity.Organism;
 import game.entity.animal.Animal;
@@ -130,7 +129,7 @@ public class Island {
                         Constructor<?> inhabitantConstructor = inhabitantsConstructorMap.get(string);
                         try {
                             inhabitant = (Organism) inhabitantConstructor.newInstance();
-                        } catch (InstantiationException| IllegalAccessException| InvocationTargetException e) {
+                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                             throw new RuntimeException(e);
                         }
                         if (inhabitant instanceof Animal) {
@@ -174,7 +173,7 @@ public class Island {
                         for (int k = 0; k < nextInt; k++) {
                             organismInstance = (Organism) inhabitantConstructor.newInstance();
                             if (organismInstance instanceof Animal) {
-                                    animalSet.add((Animal) organismInstance);
+                                animalSet.add((Animal) organismInstance);
                             } else {
                                 plantSet.add((Plant) organismInstance);
                             }
@@ -230,24 +229,38 @@ public class Island {
         System.out.print("||");
     }
 
-    public void livingOnIsland(){
-        for(int i = 0; i < height; i++){
-            for(int j = 0; j < width; j++){
+    public void feedingOnIsland() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 Area area = areas[i][j];
+
                 Map<String, Set<Animal>> animalMap = area.getAnimalMap();
-                for(Map.Entry<String, Set<Animal>> entry : animalMap.entrySet()){
-                    Set<Animal> value = entry.getValue();
-                    for(Animal animal : value){
-                        animal.eat(area);
+
+                Iterator<Map.Entry<String, Set<Animal>>> iterator = animalMap.entrySet().iterator();
+
+                while (iterator.hasNext()) {
+
+                    Map.Entry<String, Set<Animal>> entry = iterator.next();
+                    System.out.println(entry);
+                    Set<Animal> animals = entry.getValue();
+
+                    if (!animals.isEmpty()) {
+                        Iterator<Animal> animalIterator = animals.iterator();
+                        while (animalIterator.hasNext()) {
+                            Animal animal = animalIterator.next();
+                            System.out.println("Animal:" + animal);
+                            animal.eat(area);
+                        }
                     }
                 }
+
             }
         }
     }
 
     public void simulateLivingOnIsland() {
         initialPopulation();
-        livingOnIsland();
+        feedingOnIsland();
         System.out.println("-".repeat(200));
         printStatisticsAsTable();
     }

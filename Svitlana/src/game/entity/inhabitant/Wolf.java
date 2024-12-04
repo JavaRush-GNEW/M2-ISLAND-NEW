@@ -39,16 +39,21 @@ public class Wolf extends Predator {
     }
 
     @Override
+    public Map<String, Integer> getNutritionMap() {
+        return NUTRITION_MAP;
+    }
+
+    @Override
     public String getImage() {
         return "\uD83D\uDC3A";
     }
 
 
-    @Override
-    public void eat(Area area) {
-
-        //System.out.println("Yammy meat");
-    }
+//    @Override
+//    public void eat(Area area) {
+//
+//        System.out.println("Yammy meat");
+//    }
 
     @Override
     public Wolf reproduce() {
