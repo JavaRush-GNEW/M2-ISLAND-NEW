@@ -12,6 +12,7 @@ public abstract class Animal implements Organism, Movable {
     private final String id;
     protected int healthPoint;
 
+
     protected Animal(){
         this.healthPoint = 100;
         this.id = UUID.randomUUID().toString();
@@ -21,7 +22,7 @@ public abstract class Animal implements Organism, Movable {
     public abstract void eat(Area area);
 
 
-    private Direction chooseDirection(){
+    protected Direction chooseDirection(){
         ThreadLocalRandom random = ThreadLocalRandom.current();
         Direction direction = Direction.values()[random.nextInt(Direction.values().length)];
         return direction;

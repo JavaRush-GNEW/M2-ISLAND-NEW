@@ -17,7 +17,7 @@ public class Caterpillar extends Herbivorous {
     }
 
     public static final OrganismProperty ORGANISM_PROPERTY;
-    public static final Map<Class<? extends Organism>, Integer> NUTRITION_MAP;
+    public static final Map<String, Integer> NUTRITION_MAP;
 
     static {
         try {
@@ -29,13 +29,23 @@ public class Caterpillar extends Herbivorous {
     }
 
     @Override
+    public String toString() {
+        return "Caterpillar";
+    }
+
+    @Override
     public OrganismProperty getProperties() {
         return ORGANISM_PROPERTY;
     }
 
     @Override
+    public String getImage() {
+        return "\uD83D\uDC1B";
+    }
+
+    @Override
     public void eat(Area area) {
-        System.out.println("Awesome air");
+        //System.out.println("Caterpillar: Yammy grass");
     }
 
     @Override
@@ -46,7 +56,7 @@ public class Caterpillar extends Herbivorous {
     }
 
     @Override
-    public void move() {
+    public void move(Area area) {
 
     }
 }

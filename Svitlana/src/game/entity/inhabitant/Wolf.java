@@ -16,7 +16,7 @@ public class Wolf extends Predator {
     }
 
     public static final OrganismProperty ORGANISM_PROPERTY;
-    public static final Map<Class<? extends Organism>, Integer> NUTRITION_MAP;
+    public static final Map<String, Integer> NUTRITION_MAP;
 
     //TODO: make NUTRITION_MAP an ORGANISM_PROPERTY field
     static {
@@ -29,14 +29,25 @@ public class Wolf extends Predator {
     }
 
     @Override
+    public String toString() {
+        return "Wolf";
+    }
+
+    @Override
     public OrganismProperty getProperties() {
         return ORGANISM_PROPERTY;
+    }
+
+    @Override
+    public String getImage() {
+        return "\uD83D\uDC3A";
     }
 
 
     @Override
     public void eat(Area area) {
-        System.out.println("Yammy meat");
+
+        //System.out.println("Yammy meat");
     }
 
     @Override
@@ -46,7 +57,7 @@ public class Wolf extends Predator {
     }
 
     @Override
-    public void move() {
+    public void move(Area area) {
 
     }
 }

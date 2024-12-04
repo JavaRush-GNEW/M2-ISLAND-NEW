@@ -18,7 +18,7 @@ public class OrganismPropertyUtil {
         return new ObjectMapper().readValue(new File(PATH_TO_FILE + className + EXTENSION), OrganismProperty.class);
     }
 
-    public static Map<Class<? extends Organism>, Integer> readNutritionInf(String fileName) throws IOException {
+    public static Map<String, Integer> readNutritionInf(String fileName) throws IOException {
         return new YAMLMapper().readValue(new File(PATH_TO_FILE + fileName), Map.class);
     }
 }

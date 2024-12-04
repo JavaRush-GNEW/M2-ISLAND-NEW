@@ -26,6 +26,11 @@ public class Grass extends Plant {
     }
 
     @Override
+    public String toString() {
+        return "Grass";
+    }
+
+    @Override
     public Grass reproduce() {
         boolean condition = true;
         return condition ? new Grass() : null;
@@ -34,5 +39,10 @@ public class Grass extends Plant {
     @Override
     public OrganismProperty getProperties() {
         return ORGANISM_PROPERTY;
+    }
+
+    @Override
+    public String getImage() {
+        return "\uD83C\uDF31";
     }
 }

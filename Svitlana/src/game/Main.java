@@ -14,8 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
     public static void main(String[] args) throws IOException {
         OrganismProperty organismProperty = new ObjectMapper().readValue(new File("C:\\Java\\Projects\\M2-ISLAND\\M2-ISLAND-Svitlana\\Svitlana\\src\\resources\\duck.json"), OrganismProperty.class);
@@ -36,6 +35,6 @@ public class Main {
         System.out.println("*".repeat(20));
 
         GameProperty gameProperty = GamePropertyUtil.readGameProp("game_property.xml");
-        new Island().initialPopulation();
+        new Island().simulateLivingOnIsland();
     }
 }
