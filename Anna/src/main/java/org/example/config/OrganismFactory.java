@@ -1,5 +1,6 @@
 package org.example.config;
 
+import org.example.model.map.Cell;
 import org.example.model.organism.Organism;
 import org.reflections.Reflections;
 
@@ -24,7 +25,7 @@ public class OrganismFactory {
                 .collect(Collectors.toSet());
     }
 
-    public static HashMap<Class<? extends Organism>, Set<Organism>> createResidents() {
+    public static HashMap<Class<? extends Organism>, Set<Organism>> createResidents(Cell cell) {
         Set<Class<? extends Organism>> organismClasses = getSubClasses();
         HashMap<Class<? extends Organism>, Set<Organism>> instances = new HashMap<>();
         for (Class<? extends Organism> organismClass : organismClasses) {
@@ -33,12 +34,14 @@ public class OrganismFactory {
                 Field maxQuantityAtCell = organismClass.getDeclaredField("MAX_QUANTITY_AT_CELL");
                 maxQuantityAtCell.setAccessible(true);
                 int maxQuantity = maxQuantityAtCell.getInt(null);
-                int count = ThreadLocalRandom.current().nextInt(0, maxQuantity / 2 + 1);
+                int count = ThreadLocalRandom.current().nextInt(2, maxQuantity / 2 + 1);
 
                 Set<Organism> organisms = new HashSet<>();
 
                 for (int i = 0; i < count; i++) {
-                    organisms.add((Organism) constructor.newInstance());
+                    Organism organism = (Organism) constructor.newInstance();
+                    organism.setCell(cell);
+                    organisms.add(organism);
                 }
 
                 instances.put(organismClass, organisms);

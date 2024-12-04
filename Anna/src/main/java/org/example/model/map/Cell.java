@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Cell {
-    private final Map<Class<? extends Organism>, Set<Organism>> residents;
+    private Map<Class<? extends Organism>, Set<Organism>> residents;
 
     public Cell(Map<Class<? extends Organism>, Set<Organism>> residents) {
         this.residents = residents;
@@ -18,10 +18,23 @@ public class Cell {
         return residents;
     }
 
+    public void setResidents(Map<Class<? extends Organism>, Set<Organism>> residents) {
+        this.residents = residents;
+    }
+
     public boolean add(Organism organism) {
         Class<? extends Organism> organismClass = organism.getClass();
         residents.putIfAbsent(organismClass, new HashSet<>());
         return residents.get(organismClass).add(organism);
+    }
+
+    public boolean remove(Organism organism) {
+        Class<? extends Organism> organismClass = organism.getClass();
+        Set<Organism> organisms = residents.get(organismClass);
+        if (organisms != null) {
+            return organisms.remove(organism);
+        }
+        return false;
     }
 
     @Override

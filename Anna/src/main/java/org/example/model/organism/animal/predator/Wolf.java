@@ -1,5 +1,7 @@
 package org.example.model.organism.animal.predator;
 
+import org.example.model.organism.animal.herbivore.Horse;
+
 public class Wolf extends Predator {
     private static final double WOLF_WEIGHT = 50;
     private static final double WOLF_FOOD_NEEDED = 8;
@@ -8,23 +10,12 @@ public class Wolf extends Predator {
 
     public Wolf() {
         super(WOLF_WEIGHT, WOLF_FOOD_NEEDED, WOLF_SPEED, MAX_QUANTITY_AT_CELL);
+        Object put = eatingProbabilities.put(Horse.class, 10);
     }
 
 
     @Override
     public Wolf createOffspring() {
         return new Wolf();
-    }
-
-    @Override
-    public String toString() {
-        return "Wolf{" +
-                "isAlive=" + isAlive +
-                ", health=" + health +
-                ", weight=" + weight +
-                ", foodNeeded=" + foodNeeded +
-                ", speed=" + speed +
-                ", maxPopulation=" + maxPopulation +
-                '}';
     }
 }

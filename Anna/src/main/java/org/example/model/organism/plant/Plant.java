@@ -9,17 +9,32 @@ import java.util.Set;
 import java.util.UUID;
 
 public class Plant implements Organism, Reproducible {
-    private static final double WEIGHT = 1;
+    private static final double PLANT_WEIGHT = 1;
     private static final int MAX_QUANTITY_AT_CELL = 200;
     private final UUID id = UUID.randomUUID();
+    private Cell cell;
+
+    @Override
+    public Cell getCell() {
+        return cell;
+    }
+
+    @Override
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
 
     @Override
     public boolean die() {
-        return false;
+        if (cell == null) {
+            return false;
+        }
+        return cell.remove(this);
     }
 
     @Override
     public void lifeCycle() {
+        reproduce();
     }
 
     @Override
@@ -36,7 +51,7 @@ public class Plant implements Organism, Reproducible {
     }
 
     @Override
-    public boolean reproduce(Cell cell) {
+    public boolean reproduce() {
         Set<Organism> sameSpecies = cell.getResidents().get(this.getClass());
         if (sameSpecies == null || sameSpecies.size() < 2) {
             return false;
