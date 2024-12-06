@@ -2,19 +2,16 @@ package game.entity.island;
 
 import game.entity.animal.Animal;
 import game.entity.plant.Plant;
-
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Area {
     private int coordinateX;
     private int coordinateY;
 
-    //private Set<Animal> animalSet = new HashSet<Animal>();
-    private Map<String, Set<Animal>> animalMap = new HashMap<>();
-    //private Set<Plant> plantSet = new HashSet<Plant>();
-    private Map<String, Set<Plant>> plantMap = new HashMap<>();
+    private Map<String, Set<Animal>> animalMap = new ConcurrentHashMap<>();
+    private Map<String, Set<Plant>> plantMap = new ConcurrentHashMap<>();
 
     public Area(int j, int i) {
         this.coordinateX = j;
@@ -28,14 +25,6 @@ public class Area {
     public Map<String, Set<Plant>> getPlantMap() {
         return plantMap;
     }
-
-//    public Set<Animal> getAnimalSet() {
-//        return animalSet;
-//    }
-//
-//    public Set<Plant> getPlantSet() {
-//        return plantSet;
-//    }
 
     public int getCoordinateY() {
         return coordinateY;

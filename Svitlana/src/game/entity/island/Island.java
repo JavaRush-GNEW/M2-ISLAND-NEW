@@ -5,7 +5,6 @@ import game.entity.Organism;
 import game.entity.animal.Animal;
 import game.entity.plant.Plant;
 import game.utils.GamePropertyUtil;
-
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -30,13 +29,13 @@ public class Island {
     private static final Map<String, Constructor<?>> inhabitantsConstructorMap = getInhabitantsConstructorMap();
     private static final List<Organism> inhabitants = inhabitantsVariety();
     private Map<String, Organism> organismImageTable = new HashMap<>();
-
-    private static int height = GAME_PROPERTY.getAreaHeight();
-    private static int width = GAME_PROPERTY.getAreaWidth();
-    private static final Area[][] areas = new Area[height][width];
+    private static int islandHeight = GAME_PROPERTY.getAreaHeight();
+    private static int islandWidth = GAME_PROPERTY.getAreaWidth();
+    private static final Area[][] areas = new Area[islandHeight][islandWidth];
     private final int simulationTime = GAME_PROPERTY.getSimulationTime();
 
     public Island() {
+
     }
 
     public static Area[][] getArea() {
@@ -59,10 +58,9 @@ public class Island {
         return inhabitantsSimpleNames;
     }
 
-    public void initialPopulation() {
-        //readAndCreateInhabitants();
-        readAndCreateInhabitants2();
-        printStatisticsAsTable();
+    public void initialPopulation(int areaHeight, int areaWidth) {
+        readAndCreateInhabitants(areaHeight, areaWidth);
+        printStatisticsAsTable(areaHeight, areaWidth);
     }
 
     private static List<Constructor<?>> getInhabitantsConstructor() {
@@ -114,9 +112,9 @@ public class Island {
         return inhabitant.getImage();
     }
 
-    private void readAndCreateInhabitants2() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+    private void readAndCreateInhabitants(int areaHeight, int areaWidth) {
+        for (int i = 0; i < areaHeight; i++) {
+            for (int j = 0; j < areaWidth; j++) {
                 areas[i][j] = new Area(i, j);
                 for (Organism inhabitant : inhabitants) {
                     int maxCellQuantity = inhabitant.getProperties().getMaxCellQuantity();
@@ -149,51 +147,9 @@ public class Island {
         }
     }
 
-    private void readAndCreateInhabitants() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                areas[i][j] = new Area(j, i);
-                for (String name : inhabitantsFullNames) {
-                    try {
-                        Class<?> aClass = Class.forName(name);
-                        System.out.println("simple name :" + aClass.getSimpleName());
-                        Constructor<?> inhabitantConstructor = aClass.getConstructor();
-                        Organism o = (Organism) inhabitantConstructor.newInstance();
-
-                        int maxCellQuantity = o.getProperties().getMaxCellQuantity();
-                        System.out.println("Inhabitant name:" + name + " max cell quantity:" + maxCellQuantity);
-
-                        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
-                        int nextInt = threadLocalRandom.nextInt(0, maxCellQuantity);
-                        System.out.println("nextInt:" + nextInt);
-
-                        Organism organismInstance;
-                        HashSet<Animal> animalSet = new HashSet<>();
-                        HashSet<Plant> plantSet = new HashSet<>();
-                        for (int k = 0; k < nextInt; k++) {
-                            organismInstance = (Organism) inhabitantConstructor.newInstance();
-                            if (organismInstance instanceof Animal) {
-                                animalSet.add((Animal) organismInstance);
-                            } else {
-                                plantSet.add((Plant) organismInstance);
-                            }
-                        }
-                        areas[i][j].getAnimalMap().put(o.toString(), animalSet);
-                        areas[i][j].getPlantMap().put(o.toString(), plantSet);
-
-
-                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-                             IllegalAccessException | ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }
-    }
-
-    private void printStatisticsAsTable() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+    private void printStatisticsAsTable(int areaHeight, int areaWidth) {
+        for (int i = 0; i < areaHeight; i++) {
+            for (int j = 0; j < areaWidth; j++) {
                 printAreaAnimals(i, j);
                 printAreaPlants(i, j);
             }
@@ -208,7 +164,6 @@ public class Island {
             if (animalMap.containsKey(name)) {
                 Set<Animal> animals = animalMap.get(name);
                 String image = getInhabitantImage(getOrganismTable().get(name));
-                //String image = getOrganismTable().get(name).getImage();
                 System.out.printf("%s:%4s %s", image, animals.size(), "");
             }
         }
@@ -222,16 +177,15 @@ public class Island {
             if (plantMap.containsKey(name)) {
                 Set<Plant> plants = plantMap.get(name);
                 String image = getInhabitantImage(getOrganismTable().get(name));
-                //String image = getOrganismTable().get(name).getImage();
                 System.out.printf("%s:%4s %s", image, plants.size(), "");
             }
         }
         System.out.print("||");
     }
 
-    public void feedingOnIsland() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+    public void feedingOnIsland(int areaHeight, int areaWidth) {
+        for (int i = 0; i < areaHeight; i++) {
+            for (int j = 0; j < areaWidth; j++) {
                 Area area = areas[i][j];
 
                 Map<String, Set<Animal>> animalMap = area.getAnimalMap();
@@ -258,9 +212,9 @@ public class Island {
         }
     }
 
-    public void reproducingOnIsland() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+    public void reproducingOnIsland(int areaHeight, int areaWidth) {
+        for (int i = 0; i < areaHeight; i++) {
+            for (int j = 0; j < areaWidth; j++) {
                 Area area = areas[i][j];
                 Set<Animal> youngAnimals;
                 Map<String, Set<Animal>> animalMap = area.getAnimalMap();
@@ -295,13 +249,13 @@ public class Island {
         }
     }
 
-    public void simulateLivingOnIsland() {
-        initialPopulation();
-        feedingOnIsland(); //phase 1
-        printStatisticsAsTable();
-        reproducingOnIsland(); //phase 2
-        System.out.println("-".repeat(200));
-        printStatisticsAsTable();
-    }
+//    public void simulateLivingOnIsland() {
+//        initialPopulation();
+//        feedingOnIsland(); //phase 1
+//        printStatisticsAsTable();
+//        reproducingOnIsland(); //phase 2
+//        System.out.println("-".repeat(200));
+//        printStatisticsAsTable();
+//    }
 
 }

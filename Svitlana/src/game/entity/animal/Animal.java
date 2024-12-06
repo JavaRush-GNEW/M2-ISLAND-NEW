@@ -6,15 +6,12 @@ import game.entity.OrganismProperty;
 import game.entity.island.Area;
 import game.entity.Direction;
 import game.entity.Organism;
-import game.entity.island.Island;
 import game.entity.plant.Plant;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static game.entity.island.Island.GAME_PROPERTY;
 
 public abstract class Animal implements Organism, Movable {
     private final String id;
@@ -28,7 +25,7 @@ public abstract class Animal implements Organism, Movable {
     protected Animal(){
         this.healthPoint = 100;
         this.id = UUID.randomUUID().toString();
-        this.areas = Island.getArea();
+//        this.areas = Island.getArea();
     }
 
     protected int getHealthPoint() {
