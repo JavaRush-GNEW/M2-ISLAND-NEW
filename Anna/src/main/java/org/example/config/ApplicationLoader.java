@@ -1,12 +1,14 @@
 package org.example.config;
 
+import org.example.lifecycle.LifeCycleManager;
+import org.example.lifecycle.PlantLifeCycleManager;
 import org.example.model.map.Cell;
 import org.example.model.map.GameField;
 import org.example.model.organism.Organism;
+import org.example.model.organism.animal.Animal;
+import org.example.statistics.StatisticsCollector;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 public class ApplicationLoader {
@@ -28,7 +30,49 @@ public class ApplicationLoader {
 
     public ApplicationContext init() {
         initGameField(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+        GameField gameField = applicationContext.getGameField();
+        LifeCycleManager lifeCycleManager = new LifeCycleManager(gameField);
+        PlantLifeCycleManager plantLifeCycleManager = new PlantLifeCycleManager(applicationContext);
+        StatisticsCollector statisticsCollector = new StatisticsCollector(gameField);
+
+        lifeCycleManager.startLifeCycle();
+        plantLifeCycleManager.startPlantLifeCycle();
+        statisticsCollector.startCollecting();
+        while (true) {
+            if (areAllAnimalsDead(gameField)) {
+                System.out.printf("All animals are dead. Shutting down the simulation...");
+                lifeCycleManager.stopLifeCycle();
+                statisticsCollector.stopCollecting();
+                statisticsCollector.stopCollecting();
+                break;
+            }
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Application interrupted");
+                break;
+            }
+        }
+
+
         return applicationContext;
+    }
+
+    private boolean areAllAnimalsDead(GameField gameField) {
+        Cell[][] cells = gameField.getCells();
+        for (Cell[] row : cells) {
+            for (Cell cell : row) {
+                for (Set<Organism> organisms : cell.getResidents().values()) {
+                    for (Organism organism : organisms) {
+                        if (organism instanceof Animal && ((Animal<?>) organism).isAlive()) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void initGameField(int width, int height) {
@@ -37,31 +81,13 @@ public class ApplicationLoader {
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                Cell cell = new Cell(new HashMap<>());
+                Cell cell = new Cell(i, j, new HashMap<>());
                 cells[i][j] = cell;
                 HashMap<Class<? extends Organism>, Set<Organism>> residents = OrganismFactory.createResidents(cell);
                 cell.setResidents(residents);
             }
         }
-        System.out.println(cells[0][0]);
         this.applicationContext.setGameField(gameField);
-
-        for (Cell[] cell : cells) {
-            for (Cell cell1 : cell) {
-                Set<Map.Entry<Class<? extends Organism>, Set<Organism>>> entries = cell1.getResidents().entrySet();
-                Iterator<Map.Entry<Class<? extends Organism>, Set<Organism>>> iterator = entries.iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry<Class<? extends Organism>, Set<Organism>> next = iterator.next();
-                    Set<Organism> organisms = next.getValue();
-                    organisms.iterator().next();
-                    organisms.iterator().next();
-                    organisms.iterator().next().lifeCycle();
-//                    organisms.iterator().next().lifeCycle();
-//                    organisms.iterator().next().lifeCycle();
-                }
-            }
-        }
-        System.out.println(cells[0][0]);
     }
 
 }

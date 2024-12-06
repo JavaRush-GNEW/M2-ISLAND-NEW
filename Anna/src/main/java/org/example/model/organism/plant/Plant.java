@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class Plant implements Organism, Reproducible {
     private static final double PLANT_WEIGHT = 1;
-    private static final int MAX_QUANTITY_AT_CELL = 200;
+    private static final int MAX_POPULATION = 200;
     private final UUID id = UUID.randomUUID();
     private Cell cell;
 
@@ -22,6 +22,11 @@ public class Plant implements Organism, Reproducible {
     @Override
     public void setCell(Cell cell) {
         this.cell = cell;
+    }
+
+    @Override
+    public int getMaxPopulation() {
+        return MAX_POPULATION;
     }
 
     @Override
@@ -53,18 +58,7 @@ public class Plant implements Organism, Reproducible {
     @Override
     public boolean reproduce() {
         Set<Organism> sameSpecies = cell.getResidents().get(this.getClass());
-        if (sameSpecies == null || sameSpecies.size() < 2) {
-            return false;
-        }
-        if (sameSpecies.size() >= MAX_QUANTITY_AT_CELL) {
-            return false;
-        }
-        Organism partner = sameSpecies.stream()
-                .filter(item -> item instanceof Plant && item.getClass() == this.getClass() && item != this)
-                .findFirst()
-                .orElse(null);
-
-        if (partner == null) {
+        if (sameSpecies == null || sameSpecies.size() >= MAX_POPULATION) {
             return false;
         }
 

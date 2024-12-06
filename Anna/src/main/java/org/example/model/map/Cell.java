@@ -8,10 +8,22 @@ import java.util.Map;
 import java.util.Set;
 
 public class Cell {
+    private final int x;
+    private final int y;
     private Map<Class<? extends Organism>, Set<Organism>> residents;
 
-    public Cell(Map<Class<? extends Organism>, Set<Organism>> residents) {
+    public Cell(int x, int y, Map<Class<? extends Organism>, Set<Organism>> residents) {
+        this.x = x;
+        this.y = y;
         this.residents = residents;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public Map<Class<? extends Organism>, Set<Organism>> getResidents() {
@@ -31,10 +43,17 @@ public class Cell {
     public boolean remove(Organism organism) {
         Class<? extends Organism> organismClass = organism.getClass();
         Set<Organism> organisms = residents.get(organismClass);
-        if (organisms != null) {
-            return organisms.remove(organism);
+        return organisms != null && organisms.remove(organism);
+    }
+
+    public boolean canAccommodate(Organism organism) {
+        Class<? extends Organism> organismClass = organism.getClass();
+        Set<Organism> sameSpecies = residents.getOrDefault(organismClass, new HashSet<>());
+        int maxPopulation = organism.getMaxPopulation();
+        if (sameSpecies.size() >= maxPopulation) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override

@@ -12,7 +12,6 @@ public class Main {
 
         GameField gameField = context.getGameField();
 
-
         System.out.println("Island");
 
     }

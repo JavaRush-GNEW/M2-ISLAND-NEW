@@ -1,5 +1,6 @@
 package org.example.model.organism.animal;
 
+import org.example.config.ApplicationContext;
 import org.example.model.map.Cell;
 import org.example.model.organism.Feeding;
 import org.example.model.organism.Movable;
@@ -25,10 +26,10 @@ public abstract class Animal<T extends Animal<T>> implements Organism, Movable, 
     protected int maxPopulation;
     protected final Map<Class<? extends Organism>, Integer> eatingProbabilities = new HashMap<>();
 
-    public Animal() {
+    protected Animal() {
     }
 
-    public Animal(double weight, double foodNeeded, int speed, int maxPopulation) {
+    protected Animal(double weight, double foodNeeded, int speed, int maxPopulation) {
         this.weight = weight;
         this.foodNeeded = foodNeeded;
         this.speed = speed;
@@ -57,16 +58,16 @@ public abstract class Animal<T extends Animal<T>> implements Organism, Movable, 
         return maxPopulation;
     }
 
-    public void setAlive(boolean alive) {
-        isAlive = alive;
-    }
-
     public double getHealth() {
         return health;
     }
 
     public void setHealth(double health) {
         this.health = health;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 
     public Map<Class<? extends Organism>, Integer> getEatingProbabilities() {
@@ -87,13 +88,21 @@ public abstract class Animal<T extends Animal<T>> implements Organism, Movable, 
     }
 
     public void move() {
-        System.out.println("move");
-        if (!isAlive) {
+        if (!isAlive || cell == null) {
             return;
         }
-        health -= LOST_HEALTH_PER_MOVE * health;
-        if (health <= 0) {
 
+        List<Cell> possibleCells = calculatePossibleCells();
+        if (possibleCells.isEmpty()) {
+            return;
+        }
+        Cell targetCell = selectTargetCell(possibleCells);
+        if (targetCell != cell) {
+            moveToCell(targetCell);
+            decreaseHealthForMove();
+        }
+        if (health <= 0) {
+            die();
         }
     }
 
@@ -101,30 +110,14 @@ public abstract class Animal<T extends Animal<T>> implements Organism, Movable, 
         if (!isAlive) {
             return false;
         }
+        System.out.println("maxPopulation " + maxPopulation);
         Set<Organism> sameSpecies = cell.getResidents().get(this.getClass());
-        if (sameSpecies == null || sameSpecies.size() < 2) {
+        if (sameSpecies == null || sameSpecies.size() >= maxPopulation) {
             return false;
         }
-        if (sameSpecies.size() >= maxPopulation) {
-            return false;
-        }
-        Organism partner = sameSpecies.stream()
-                .filter(item -> item instanceof Animal && item.getClass() == this.getClass() && item != this)
-                .findFirst()
-                .orElse(null);
 
-        if (partner == null) {
-            return false;
-        }
         this.health -= LOST_HEALTH_PER_REPRODUCE * this.health;
-        System.out.println("this.health after reproduce : " + this.health);
-        Animal<T> secondParent = (Animal<T>) partner;
 
-        secondParent.health -= LOST_HEALTH_PER_REPRODUCE * secondParent.health;
-
-        if (!secondParent.isAlive) {
-            return false;
-        }
         T offspring = createOffspring();
         return cell.add(offspring);
     }
@@ -187,16 +180,65 @@ public abstract class Animal<T extends Animal<T>> implements Organism, Movable, 
             return false;
         }
         isAlive = false;
-        if (cell == null) {
-            return false;
+        if (cell != null) {
+            cell.remove(this);
         }
-        return cell.remove(this);
+        return true;
     }
 
     @Override
     public void lifeCycle() {
-        System.out.println("lifeCycle");
         eat();
+        if (health <= 0) {
+            die();
+        }
         reproduce();
+        if (health <= 0) {
+            die();
+        }
+        move();
+        if (health <= 0) {
+            die();
+        }
+    }
+
+    private void decreaseHealthForMove() {
+        health -= LOST_HEALTH_PER_MOVE * health;
+        if (health <= 0) {
+            die();
+        }
+    }
+
+    private List<Cell> calculatePossibleCells() {
+        List<Cell> possibleCells = new ArrayList<>();
+        Cell[][] field = ApplicationContext.getInstance().getGameField().getCells();
+        int currentX = cell.getX();
+        int currentY = cell.getY();
+        int moveDistance = ThreadLocalRandom.current().nextInt(0, speed + 1);
+
+        addCellIfValid(possibleCells, field, currentX - moveDistance, currentY);
+        addCellIfValid(possibleCells, field, currentX + moveDistance, currentY);
+        addCellIfValid(possibleCells, field, currentX, currentY - moveDistance);
+        addCellIfValid(possibleCells, field, currentX, currentY + moveDistance);
+        return possibleCells;
+    }
+
+    private void addCellIfValid(List<Cell> possibleCells, Cell[][] field, int x, int y) {
+        if (x >= 0 && x < field.length && y >= 0 && y < field[0].length) {
+            Cell targetCell = field[x][y];
+            if (targetCell.canAccommodate(this)) {
+                possibleCells.add(targetCell);
+            }
+        }
+    }
+
+    private Cell selectTargetCell(List<Cell> possibleCells) {
+        return possibleCells.get(ThreadLocalRandom.current().nextInt(possibleCells.size()));
+    }
+
+    private void moveToCell(Cell targetCell) {
+        cell.remove(this);
+        targetCell.add(this);
+        setCell(targetCell);
     }
 }

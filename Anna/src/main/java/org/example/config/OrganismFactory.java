@@ -31,7 +31,7 @@ public class OrganismFactory {
         for (Class<? extends Organism> organismClass : organismClasses) {
             try {
                 Constructor<?> constructor = organismClass.getDeclaredConstructor();
-                Field maxQuantityAtCell = organismClass.getDeclaredField("MAX_QUANTITY_AT_CELL");
+                Field maxQuantityAtCell = organismClass.getDeclaredField("MAX_POPULATION");
                 maxQuantityAtCell.setAccessible(true);
                 int maxQuantity = maxQuantityAtCell.getInt(null);
                 int count = ThreadLocalRandom.current().nextInt(2, maxQuantity / 2 + 1);

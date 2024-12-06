@@ -7,6 +7,8 @@ public interface Organism {
 
     void setCell(Cell cell);
 
+    int getMaxPopulation();
+
     boolean die();
 
     void lifeCycle();
