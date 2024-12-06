@@ -27,10 +27,12 @@ public class Cell {
             entities.add(animal);
             return true;
         } else {
-            System.out.println("Не можна додати " + animal.getClass().getSimpleName() + " у клітинку: досягнуто максимум.");
+            entities.remove(animal);
+//            System.out.println("Не можна додати " + animal.getClass().getSimpleName() + " у клітинку: досягнуто максимум.");
             return false;
         }
     }
+
     public List<Animal> getEntities(){
         return entities;
     }
@@ -40,8 +42,6 @@ public class Cell {
     public List<Plant> getPlants(){
         return plants;
     }
-
-
     public void removeEntity(Animal animal) {
         entities.remove(animal);
     }

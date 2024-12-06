@@ -26,32 +26,10 @@ public class Island {
             }
         }
         IslandGenerator islandGenerator = new IslandGenerator();
-        islandGenerator.populateIsland(GRID,100);
+        islandGenerator.populateIsland(GRID, 100);
 
-        System.out.println("Початковий стан острова:");
-        printIsland(getGRID());
-
-        // Movable //
-        moveAllAnimals(getGRID());
-
-        // CONSOLE checked update move
-        System.out.println("\nСтан острова після переміщення:");
-        printIsland(getGRID());
-        System.out.println("_________________________");
-        printAnimalStatisticsSimple("До полювання");
-        System.out.println("_________________________");
-        System.out.println("Початок полювання");
-        huntAllAnimals();
-
-        System.out.println("_________________________");
-        printAnimalStatisticsSimple("Після полювання");
-        System.out.println("_________________________");
-        System.out.println("Початок розмноження");
-        System.out.println("_________________________");
-        handleReproduction();
-        System.out.println("_________________________");
-        printAnimalStatisticsSimple("Після розмноження");
     }
+
 
 
     public Cell[][] getGRID() {
@@ -149,7 +127,6 @@ public class Island {
 
         for (Cell[] row : getGRID()) {
             for (Cell cell : row) {
-                // Використовуємо stream для підрахунку тварин і рослин
                 long predatorsInCell = cell.getEntities().stream().filter(animal -> animal instanceof Predator).count();
                 long herbivoresInCell = cell.getEntities().stream().filter(animal -> animal instanceof Herbivore).count();
                 long plantsInCell = cell.getPlants().stream().filter(plant -> plant instanceof Plant).count();
@@ -160,14 +137,14 @@ public class Island {
             }
         }
 
-        // Виведення статистики
+        // Stats //
         System.out.println(message);
         System.out.println("Кількість Predators: " + predatorCount);
         System.out.println("Кількість Herbivores: " + herbivoreCount);
         System.out.println("Кількість Plants: " + plantCount);
     }
 
-
+            // REPRODUCTION //
     public void handleReproduction() {
         int successfulReproductions = 0;
         int failedReproductions = 0;
@@ -178,30 +155,20 @@ public class Island {
                 for (Animal animal : animals) {
                     if (animal instanceof Reproduction) {
                         boolean isSaturationEnough = animal.getSaturation() > animal.getMaxSaturation() / 2;
-
                         if (isSaturationEnough) {
-                            // Проводимо розмноження
-
-                            ((Reproduction) animal).reproduce(cell);
+                            ((Reproduction) animal).reproduce(cell,animal);
                             successfulReproductions++;
                         } else {
                             failedReproductions++;
-                            if (!isSaturationEnough) {
-//                                           System.out.println(animal.getClass().getSimpleName() + " не зміг розмножитися через низький рівень насичення");
-                            }
                         }
                     }
                 }
             }
         }
-
-        // Виведення статистики
-        System.out.println("Результати розмноження:");
-        System.out.println("Успішні розмноження: " + successfulReproductions);
-        System.out.println("Невдалі спроби розмноження: " + failedReproductions);
+        // Stats //
+//        System.out.println("Результати розмноження:");
+//        System.out.println("Успішні розмноження: " + successfulReproductions);
+//        System.out.println("Невдалі спроби розмноження: " + failedReproductions);
     }
-
-
-
 }
 

@@ -4,18 +4,17 @@ import org.example.entity.animal.Animal;
 import org.example.entity.map.Cell;
 
 public interface Reproduction {
-    default void reproduce(Cell currentCell){
-       if(canReproduce()){
-           Animal newAnimal = createNewAnimal();
-           if (currentCell.addEntity(newAnimal) & currentCell.getEntities().size() < newAnimal.getMaxPerCellAnimal()) {
-//               System.out.println(getNameAnimal() + " розмножився у клітинці.");
-           } else {
-//               System.out.println("Не вдалося додати " + getNameAnimal() + " через обмеження.");
-           }
-       }else {
-//           System.out.println("Can't reproduce");
-       }
-   };
+    default void reproduce(Cell currentCell, Animal animal) {
+        if (canReproduce()) {
+                Animal newAnimal = createNewAnimal();
+                if (currentCell.addEntity(newAnimal)) {
+//                    System.out.println(getNameAnimal() + " розмножився.");
+                } else {
+//                    System.out.println("Не вдалося розмножити " + getNameAnimal() + ": досягнуто максимум.");
+                }
+
+        }
+    }
    boolean canReproduce();
    Animal createNewAnimal();
    String getNameAnimal();

@@ -55,4 +55,7 @@ public abstract class Animal extends LivingEntity implements Reproduction {
     public void decreaseSaturation(double amount) {
         saturation = Math.max(0.0, saturation - amount); // Насиченість не може бути нижче 0
     }
+
+
+
 }

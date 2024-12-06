@@ -28,7 +28,7 @@ public interface Hunting {
             // Chance eat this animal //
             int huntingChance = getHuntingChances().getOrDefault(prey.getClass(), 0);
 
-            if (RANDOM.nextInt(100) <= huntingChance) {
+            if (RANDOM.nextInt(100) < huntingChance) {
                 currentCell.getEntities().remove(prey);
                 increaseSaturation(1);
 //                System.out.println(getClass().getSimpleName() + " вполював " + prey.getClass().getSimpleName());
