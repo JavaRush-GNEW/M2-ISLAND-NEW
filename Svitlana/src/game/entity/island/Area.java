@@ -10,6 +10,7 @@ public class Area {
     private int coordinateX;
     private int coordinateY;
 
+    //TODO:add lock or semaphore
     private Map<String, Set<Animal>> animalMap = new ConcurrentHashMap<>();
     private Map<String, Set<Plant>> plantMap = new ConcurrentHashMap<>();
 

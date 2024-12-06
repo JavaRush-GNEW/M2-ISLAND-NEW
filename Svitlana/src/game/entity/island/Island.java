@@ -31,6 +31,8 @@ public class Island {
     private Map<String, Organism> organismImageTable = new HashMap<>();
     private static int islandHeight = GAME_PROPERTY.getAreaHeight();
     private static int islandWidth = GAME_PROPERTY.getAreaWidth();
+    //TODO: add lock or semaphore
+    //TODO: to adapt methods to work in multithreading change params to area[][] in reproducingOnIsland(), feedingOnIsland(),private void printStatisticsAsTable()
     private static final Area[][] areas = new Area[islandHeight][islandWidth];
     private final int simulationTime = GAME_PROPERTY.getSimulationTime();
 
