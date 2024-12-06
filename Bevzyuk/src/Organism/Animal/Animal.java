@@ -63,25 +63,27 @@ public abstract class Animal extends Organism {
             return;
         }
 
-        synchronized (cell) {
-            List<Organism> sameSpecies = new ArrayList<>(cell.getOrganismsByType(this.getClass().getSimpleName()));
+        List<Organism> sameSpecies = new ArrayList<>(cell.getOrganismsByType(this.getClass().getSimpleName()));
+        int availablePairs = (int) sameSpecies.stream()
+                .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
+                .count();
 
-            Animal pair = (Animal) sameSpecies.stream()
-                    .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
-                    .findFirst()
-                    .orElse(null);
+        if (availablePairs > 1 && sameSpecies.size() < maxCountPerCell) {
+            try {
+                Animal offspring = this.getClass().getDeclaredConstructor().newInstance();
+                cell.addOrganism(offspring);
 
-            if (pair != null && sameSpecies.size() < maxCountPerCell) {
-                try {
-                    Animal offspring = this.getClass().getDeclaredConstructor().newInstance();
+                Animal pair = (Animal) sameSpecies.stream()
+                        .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
+                        .findFirst()
+                        .orElse(null);
 
-                    cell.addOrganism(offspring);
-
+                if (pair != null) {
                     pair.hasReproduced = true;
                     this.hasReproduced = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
