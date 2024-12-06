@@ -81,6 +81,8 @@ public class IslandSimulationManager {
 
         waitForCompletion(tasks);
 
+        resetReproduceFlags();
+
         if (dayCounter % 5 == 0) {
             growPlantsParallel();
         }
@@ -106,6 +108,16 @@ public class IslandSimulationManager {
                 task.get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+    private void resetReproduceFlags() {
+        for (Cell[] row : island.getGrid()) {
+            for (Cell cell : row) {
+                List<Animal> animals = new ArrayList<>(cell.getAnimals());
+                for (Animal animal : animals) {
+                    animal.resetReproduceFlag();
+                }
             }
         }
     }

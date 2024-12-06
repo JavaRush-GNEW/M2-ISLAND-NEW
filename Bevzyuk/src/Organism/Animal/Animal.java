@@ -6,6 +6,7 @@ import GameMap.Island;
 import Organism.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Organism {
@@ -14,6 +15,7 @@ public abstract class Animal extends Organism {
     protected double health = 100;
     protected int speed;
     public int maxCountPerCell;
+    protected boolean hasReproduced = false;
 
     public Animal(String name, double weight, double foodNeed, int speed, int maxCountPerCell) {
         super(name, weight);
@@ -56,17 +58,32 @@ public abstract class Animal extends Organism {
     }
 
     public void reproduce(Cell cell) {
-        if (currentFood >= 0.5 * foodNeed) {
-            List<Organism> sameSpecies = cell.getOrganismsByType(this.getClass().getSimpleName());
-            if (sameSpecies.size() > 1 && sameSpecies.size() < maxCountPerCell) {
-                try {
-                    Animal offspring = this.getClass().getDeclaredConstructor().newInstance();
-                    cell.addOrganism(offspring);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        if (hasReproduced || currentFood < 0.5 * foodNeed) {
+            return;
+        }
+
+        List<Organism> sameSpecies = cell.getOrganismsByType(this.getClass().getSimpleName());
+        int availablePairs = (int) sameSpecies.stream()
+                .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
+                .count();
+
+        if (availablePairs > 1 && sameSpecies.size() < maxCountPerCell) {
+            try {
+                Animal offspring = this.getClass().getDeclaredConstructor().newInstance();
+                cell.addOrganism(offspring);
+
+                hasReproduced = true;
+                ((Animal) Objects.requireNonNull(sameSpecies.stream()
+                        .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
+                        .findFirst()
+                        .orElse(null))).hasReproduced = true;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+    }
+    public void resetReproduceFlag() {
+        hasReproduced = false;
     }
     public void act(Cell cell, Island island) {
         if (!isAlive()) {
