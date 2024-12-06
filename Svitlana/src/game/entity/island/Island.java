@@ -17,11 +17,6 @@ public class Island {
     public static final GameProperty GAME_PROPERTY;
     public static final String GAME_PROPERTY_XML = "game_property.xml";
 
-    private int height = GAME_PROPERTY.getAreaHeight();
-    private int width = GAME_PROPERTY.getAreaWidth();
-    private final Area[][] areas = new Area[height][width];
-    private final int simulationTime = GAME_PROPERTY.getSimulationTime();
-
     static {
         try {
             GAME_PROPERTY = GamePropertyUtil.readGameProp(GAME_PROPERTY_XML);
@@ -33,14 +28,19 @@ public class Island {
     private static final List<String> inhabitantsFullNames = GAME_PROPERTY.getInhabitants();
     private static final List<Constructor<?>> inhabitantsConstructor = getInhabitantsConstructor();
     private static final Map<String, Constructor<?>> inhabitantsConstructorMap = getInhabitantsConstructorMap();
-
-
     private static final List<Organism> inhabitants = inhabitantsVariety();
-
     private Map<String, Organism> organismImageTable = new HashMap<>();
 
+    private static int height = GAME_PROPERTY.getAreaHeight();
+    private static int width = GAME_PROPERTY.getAreaWidth();
+    private static final Area[][] areas = new Area[height][width];
+    private final int simulationTime = GAME_PROPERTY.getSimulationTime();
 
     public Island() {
+    }
+
+    public static Area[][] getArea() {
+        return areas;
     }
 
     Map<String, Organism> getOrganismTable() {
@@ -258,10 +258,50 @@ public class Island {
         }
     }
 
+    public void reproducingOnIsland() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Area area = areas[i][j];
+                Set<Animal> youngAnimals;
+                Map<String, Set<Animal>> animalMap = area.getAnimalMap();
+
+                Iterator<Map.Entry<String, Set<Animal>>> iterator = animalMap.entrySet().iterator();
+
+                while (iterator.hasNext()) {
+
+                    Map.Entry<String, Set<Animal>> entry = iterator.next();
+                    System.out.println(entry);
+                    Set<Animal> animals = entry.getValue();
+                    youngAnimals = new HashSet<>();
+
+                    if (!animals.isEmpty()) {
+                        Iterator<Animal> animalIterator = animals.iterator();
+                        while (animalIterator.hasNext()) {
+                            Animal animal = animalIterator.next();
+                            System.out.println("Animal:" + animal);
+                            Animal youngAnimal;
+                            if ((youngAnimal = (Animal) animal.reproduce()) != null) {
+
+                                youngAnimals.add(youngAnimal);
+                                System.out.println(animal );
+                            }
+                        }
+                    }
+                    animals.addAll(youngAnimals);
+                    entry.setValue(animals);
+                }
+
+            }
+        }
+    }
+
     public void simulateLivingOnIsland() {
         initialPopulation();
-        feedingOnIsland();
+        feedingOnIsland(); //phase 1
+        printStatisticsAsTable();
+        reproducingOnIsland(); //phase 2
         System.out.println("-".repeat(200));
         printStatisticsAsTable();
     }
+
 }

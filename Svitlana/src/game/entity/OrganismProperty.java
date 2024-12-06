@@ -1,15 +1,11 @@
 package game.entity;
 
-import java.util.Map;
 
 public class OrganismProperty {
     private  double weight;
     private  int maxCellQuantity;
     private  int maxStep;
     private  double maxFoodWeight;
-    //private  boolean isHunter;
-
-    //public Map<Organism, Integer> nutritionMap;
 
     public OrganismProperty() {
     }
@@ -19,7 +15,6 @@ public class OrganismProperty {
         this.maxCellQuantity = foodWeight;
         this.maxStep = maxStep;
         this.maxFoodWeight = maxFoodWeight;
-        //this.isHunter = isHunter;
     }
 
     public double getWeight() {
@@ -37,8 +32,4 @@ public class OrganismProperty {
     public double getMaxFoodWeight() {
         return maxFoodWeight;
     }
-
-//    public boolean isHunter() {
-//        return isHunter;
-//    }
 }

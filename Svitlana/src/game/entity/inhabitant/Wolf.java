@@ -1,12 +1,10 @@
 package game.entity.inhabitant;
 
 import game.domain.Properties;
-import game.entity.Organism;
 import game.entity.OrganismProperty;
 import game.entity.animal.Predator;
 import game.entity.island.Area;
 import game.utils.OrganismPropertyUtil;
-
 import java.io.IOException;
 import java.util.Map;
 
@@ -14,6 +12,8 @@ import java.util.Map;
 public class Wolf extends Predator {
     public Wolf() {
     }
+
+    //Area[][] areas = Island.getArea();
 
     public static final OrganismProperty ORGANISM_PROPERTY;
     public static final Map<String, Integer> NUTRITION_MAP;
@@ -28,10 +28,7 @@ public class Wolf extends Predator {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Wolf";
-    }
+    private Area area;
 
     @Override
     public OrganismProperty getProperties() {
@@ -48,17 +45,18 @@ public class Wolf extends Predator {
         return "\uD83D\uDC3A";
     }
 
-
-//    @Override
-//    public void eat(Area area) {
-//
-//        System.out.println("Yammy meat");
-//    }
+    @Override
+    public String toString() {
+        return "Wolf";
+    }
 
     @Override
     public Wolf reproduce() {
-        boolean condition = true;
-        return condition ? new Wolf() : null;
+        if(healthPoint > 25){
+            healthPoint = healthPoint - 25;
+            return  new Wolf();
+        }
+        else return null;
     }
 
     @Override

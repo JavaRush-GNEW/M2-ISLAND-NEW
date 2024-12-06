@@ -1,16 +1,16 @@
 package game.entity.inhabitant;
 
+import game.domain.AnimalType;
 import game.domain.Properties;
-import game.entity.Organism;
 import game.entity.OrganismProperty;
 import game.entity.animal.Animal;
 import game.entity.animal.Herbivorous;
 import game.entity.island.Area;
 import game.utils.OrganismPropertyUtil;
-
 import java.io.IOException;
 import java.util.Map;
 
+@AnimalType(isHunter = false)
 @Properties(filename = "caterpillar.json")
 public class Caterpillar extends Herbivorous {
 
@@ -30,11 +30,6 @@ public class Caterpillar extends Herbivorous {
     }
 
     @Override
-    public String toString() {
-        return "Caterpillar";
-    }
-
-    @Override
     public OrganismProperty getProperties() {
         return ORGANISM_PROPERTY;
     }
@@ -49,16 +44,18 @@ public class Caterpillar extends Herbivorous {
         return "\uD83D\uDC1B";
     }
 
-//    @Override
-//    public void eat(Area area) {
-//        //System.out.println("Caterpillar: Yammy grass");
-//    }
+    @Override
+    public String toString() {
+        return "Caterpillar";
+    }
 
     @Override
-    public Animal reproduce() {
-
-        boolean condition = true;
-        return condition ? new Caterpillar() : null;
+    public Caterpillar reproduce() {
+        if(healthPoint > 25){
+            healthPoint = healthPoint - 25;
+            return  new Caterpillar();
+        }
+        else return null;
     }
 
     @Override
