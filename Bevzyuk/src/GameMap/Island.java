@@ -2,10 +2,7 @@ package GameMap;
 
 import Organism.Animal.Animal;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Island {
@@ -32,26 +29,28 @@ public class Island {
 
     public List<Cell> getNeighboringCells(Cell current, int speed) {
         List<Cell> neighbors = new ArrayList<>();
-        int startRow = current.getRow();
-        int startCol = current.getCol();
-
-        explorePaths(neighbors, startRow, startCol, speed);
+        Set<Cell> visited = new HashSet<>();
+        explorePaths(neighbors, visited, current.getRow(), current.getCol(), speed);
         return neighbors;
     }
 
-    private void explorePaths(List<Cell> neighbors, int row, int col, int remainingSpeed) {
+    private void explorePaths(List<Cell> neighbors, Set<Cell> visited, int row, int col, int remainingSpeed) {
         if (remainingSpeed <= 0 || !isValidCell(row, col)) {
             return;
         }
+
         Cell cell = grid[row][col];
-        if (!neighbors.contains(cell)) {
+        if (!visited.contains(cell)) {
+            visited.add(cell);
             neighbors.add(cell);
+        } else {
+            return;
         }
 
-        explorePaths(neighbors, row - 1, col, remainingSpeed - 1);
-        explorePaths(neighbors, row + 1, col, remainingSpeed - 1);
-        explorePaths(neighbors, row, col - 1, remainingSpeed - 1);
-        explorePaths(neighbors, row, col + 1, remainingSpeed - 1);
+        explorePaths(neighbors, visited,row - 1, col, remainingSpeed - 1);
+        explorePaths(neighbors, visited,row + 1, col, remainingSpeed - 1);
+        explorePaths(neighbors, visited,row, col - 1, remainingSpeed - 1);
+        explorePaths(neighbors, visited,row, col + 1, remainingSpeed - 1);
     }
 
     private boolean isValidCell(int row, int col) {
