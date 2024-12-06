@@ -112,13 +112,21 @@ public class IslandSimulationManager {
         }
     }
     private void resetReproduceFlags() {
+        List<Future<?>> tasks = new ArrayList<>();
+
         for (Cell[] row : island.getGrid()) {
             for (Cell cell : row) {
-                List<Animal> animals = new ArrayList<>(cell.getAnimals());
-                for (Animal animal : animals) {
-                    animal.resetReproduceFlag();
-                }
+                tasks.add(executor.submit(() -> {
+                    synchronized (cell) {
+                        List<Animal> animals = new ArrayList<>(cell.getAnimals());
+                        for (Animal animal : animals) {
+                            animal.resetReproduceFlag();
+                        }
+                    }
+                }));
             }
         }
+
+        waitForCompletion(tasks);
     }
 }

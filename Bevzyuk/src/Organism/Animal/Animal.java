@@ -5,6 +5,7 @@ import GameMap.Cell;
 import GameMap.Island;
 import Organism.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -62,23 +63,25 @@ public abstract class Animal extends Organism {
             return;
         }
 
-        List<Organism> sameSpecies = cell.getOrganismsByType(this.getClass().getSimpleName());
-        int availablePairs = (int) sameSpecies.stream()
-                .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
-                .count();
+        synchronized (cell) {
+            List<Organism> sameSpecies = new ArrayList<>(cell.getOrganismsByType(this.getClass().getSimpleName()));
 
-        if (availablePairs > 1 && sameSpecies.size() < maxCountPerCell) {
-            try {
-                Animal offspring = this.getClass().getDeclaredConstructor().newInstance();
-                cell.addOrganism(offspring);
+            Animal pair = (Animal) sameSpecies.stream()
+                    .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
+                    .findFirst()
+                    .orElse(null);
 
-                hasReproduced = true;
-                ((Animal) Objects.requireNonNull(sameSpecies.stream()
-                        .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
-                        .findFirst()
-                        .orElse(null))).hasReproduced = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (pair != null && sameSpecies.size() < maxCountPerCell) {
+                try {
+                    Animal offspring = this.getClass().getDeclaredConstructor().newInstance();
+
+                    cell.addOrganism(offspring);
+
+                    pair.hasReproduced = true;
+                    this.hasReproduced = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
