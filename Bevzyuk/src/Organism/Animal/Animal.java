@@ -40,14 +40,18 @@ public abstract class Animal extends Organism {
         if (availableCells.isEmpty()) {
             return;
         }
-        int randomIndex = ThreadLocalRandom.current().nextInt(availableCells.size());
-        Cell target = availableCells.get(randomIndex);
+        while (!availableCells.isEmpty()) {
+            int randomIndex = ThreadLocalRandom.current().nextInt(availableCells.size());
+            Cell target = availableCells.get(randomIndex);
 
-        if (target.hasSpaceFor(this)) {
-            from.removeOrganism(this);
-            target.addOrganism(this);
+            if (target.hasSpaceFor(this)) {
+                from.removeOrganism(this);
+                target.addOrganism(this);
 
-            currentFood = Math.max(currentFood - 0.2 * foodNeed, 0);
+                currentFood = Math.max(currentFood - 0.2 * foodNeed, 0);
+                return;
+            }
+            availableCells.remove(randomIndex);
         }
     }
 
