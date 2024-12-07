@@ -50,8 +50,7 @@ public abstract class Animal extends Organism {
 
             if (target.hasSpaceFor(this)) {
                 from.removeOrganism(this);
-                target.addOrganism(this);
-
+                target.addTemporaryOrganism(this);
                 currentFood = Math.max(currentFood - 0.2 * foodNeed, 0);
                 return;
             }
