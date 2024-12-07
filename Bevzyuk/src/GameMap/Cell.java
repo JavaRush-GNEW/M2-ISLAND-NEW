@@ -10,6 +10,7 @@ public class Cell {
     private int col;
     private double plantMass;
     private Map<String, List<Organism>> organisms = new HashMap<>();
+    private Map<String, List<Organism>> temporaryOrganisms = new HashMap<>();
 
     public Cell(int row, int col, double plantMass) {
         this.row = row;
@@ -57,6 +58,25 @@ public class Cell {
         }
     }
 
+    public synchronized void addTemporaryOrganism(Organism organism) {
+        String type = organism.getClass().getSimpleName();
+        int currentCount = organisms.getOrDefault(type, Collections.emptyList()).size();
+        int temporaryCount = temporaryOrganisms.getOrDefault(type, Collections.emptyList()).size();
+
+        if (currentCount + temporaryCount < ((Animal) organism).maxCountPerCell) {
+            temporaryOrganisms.putIfAbsent(type, new ArrayList<>());
+            temporaryOrganisms.get(type).add(organism);
+        }
+    }
+
+    public synchronized void updateOrganisms() {
+        for (String type : temporaryOrganisms.keySet()) {
+            organisms.putIfAbsent(type, new ArrayList<>());
+            organisms.get(type).addAll(temporaryOrganisms.get(type));
+        }
+        temporaryOrganisms.clear();
+    }
+
     public synchronized void removeOrganism(Organism organism) {
         String type = organism.getClass().getSimpleName();
         if (organisms.containsKey(type)) {
@@ -70,10 +90,13 @@ public class Cell {
     public synchronized boolean hasSpaceFor(Animal animal) {
         String type = animal.getClass().getSimpleName();
         int currentCount = organisms.getOrDefault(type, Collections.emptyList()).size();
-        return currentCount < animal.maxCountPerCell;
+        int temporaryCount = temporaryOrganisms.getOrDefault(type, Collections.emptyList()).size();
+        return currentCount + temporaryCount < animal.maxCountPerCell;
     }
 
     public synchronized List<Organism> getOrganismsByType(String type) {
-        return organisms.getOrDefault(type, Collections.emptyList());
+        return new ArrayList<>(organisms.getOrDefault(type, Collections.emptyList()));
     }
 }
+
+

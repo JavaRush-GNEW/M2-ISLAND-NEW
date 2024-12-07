@@ -6,6 +6,7 @@ import GameMap.Island;
 import Organism.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -68,19 +69,18 @@ public abstract class Animal extends Organism {
                 .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
                 .count();
 
-        if (availablePairs > 1 && sameSpecies.size() < maxCountPerCell) {
+        if (availablePairs > 1) {
             try {
                 Animal offspring = this.getClass().getDeclaredConstructor().newInstance();
-                cell.addOrganism(offspring);
+                cell.addTemporaryOrganism(offspring);
+                this.hasReproduced = true;
 
                 Animal pair = (Animal) sameSpecies.stream()
                         .filter(o -> o instanceof Animal && !((Animal) o).hasReproduced)
                         .findFirst()
                         .orElse(null);
-
                 if (pair != null) {
                     pair.hasReproduced = true;
-                    this.hasReproduced = true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

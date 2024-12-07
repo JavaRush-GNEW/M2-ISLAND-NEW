@@ -75,6 +75,7 @@ public class IslandSimulationManager {
                     for (Animal animal : animals) {
                         animal.act(cell, island);
                     }
+                    cell.updateOrganisms();
                 }));
             }
         }
