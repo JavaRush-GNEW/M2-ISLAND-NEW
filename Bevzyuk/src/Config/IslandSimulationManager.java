@@ -82,6 +82,8 @@ public class IslandSimulationManager {
 
         waitForCompletion(tasks);
 
+        updateAllCells();
+
         resetReproduceFlags();
 
         if (dayCounter % 5 == 0) {
@@ -124,6 +126,19 @@ public class IslandSimulationManager {
                             animal.resetReproduceFlag();
                         }
                     }
+                }));
+            }
+        }
+
+        waitForCompletion(tasks);
+    }
+    private void updateAllCells() {
+        List<Future<?>> tasks = new ArrayList<>();
+
+        for (Cell[] row : island.getGrid()) {
+            for (Cell cell : row) {
+                tasks.add(executor.submit(() -> {
+                    cell.updateOrganisms();
                 }));
             }
         }
