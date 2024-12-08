@@ -2,7 +2,6 @@ package ua.com.javarush.gnew.entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ua.com.javarush.gnew.entity.Animal;
 import ua.com.javarush.gnew.entity.island.Cell;
 import ua.com.javarush.gnew.entity.island.Island;
 import ua.com.javarush.gnew.entity.meatEaters.Wolf;
