@@ -13,6 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Fox extends MeatEaters{
     private static final double MAX_WEIGHT = 10.0;
     private static final int MOVE_DISTANCE = 2;
+    public static short INITIAL_WEIGHT;
 
     public Fox() {
         super(30, INITIAL_WEIGHT);
