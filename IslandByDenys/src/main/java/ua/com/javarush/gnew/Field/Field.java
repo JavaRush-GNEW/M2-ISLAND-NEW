@@ -1,26 +1,83 @@
 package ua.com.javarush.gnew.Field;
 
-import lombok.Data;
 
-@Data
-public class Field implements Fieldable{
+import lombok.Getter;
+import ua.com.javarush.gnew.Animal.Animal;
+import ua.com.javarush.gnew.Plant.Plant;
 
-    public int rows;
-    public int columns;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-    private Fieldable[][] field;
+@Getter
+public class Field {
+    private final Cell[][] cells;
 
-    public Field(int rows,int columns) {
-        this.rows = rows;
-        this.columns = columns;
-        field = new Fieldable[rows][columns];
+    public Field(int rows, int cols) {
+        this.cells = new Cell[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                cells[i][j] = new Cell(i, j);
+            }
+        }
     }
-    @Override
-    public void SaveInField(int x, int y, Fieldable object){
-        field[x][y] = object;
+
+    public void performAction() {
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[0].length; j++) {
+                Cell cell = cells[i][j];
+                Animal animal = cell.getAnimal();
+
+                if (animal != null && animal.isAlive()) {
+                    animal.move(cells, i, j);
+                    animal.eat(cells, i, j);
+                    animal.reproduce(this);
+                    animal.death();
+                }
+
+                Plant plant = cell.getPlant();
+                if (plant != null) {
+                    if (animal != null && animal.isAlive() && animal.eatPlant(plant)) {
+                        cell.setPlant(null);
+                    }
+                }
+            }
+        }
     }
-    @Override
-    public Fieldable getFieldable(int x, int y) {
-        return field[x][y];
+    public Cell getRandomEmptyCell() {
+        List<Cell> emptyCells = new ArrayList<>();
+
+        for (Cell[] cell : cells) {
+            for (int j = 0; j < cells[0].length; j++) {
+                if (cell[j].getAnimal() == null) {
+                    emptyCells.add(cell[j]);
+                }
+            }
+        }
+
+        if (!emptyCells.isEmpty()) {
+            int randomIndex = (int) (Math.random() * emptyCells.size());
+            return emptyCells.get(randomIndex);
+        }
+
+        return null;
+    }
+
+    public int getWidth() {
+        return cells.length;
+    }
+
+    public int getHeight() {
+        return cells[0].length;
+    }
+
+    public Cell getCell(int x, int y) {
+        if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight()) {
+            return cells[x][y];
+        }
+        return null;
     }
 }
+
+
