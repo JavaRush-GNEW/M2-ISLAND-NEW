@@ -1,8 +1,10 @@
 package ua.com.javarush.gnew.Plant;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Plant {
     private final String name;
     private final double weight;
@@ -14,18 +16,6 @@ public class Plant {
         this.weight = weight;
         this.quantity = quantity;
         this.isEaten = false;
-    }
-
-    public boolean isEaten() {
-        return isEaten;
-    }
-
-    public void setEaten(boolean isEaten) {
-        this.isEaten = isEaten;
-    }
-
-    public int getWeight() {
-        return (int) weight;
     }
 }
 

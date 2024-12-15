@@ -4,13 +4,13 @@ import lombok.Data;
 import lombok.Getter;
 import ua.com.javarush.gnew.Field.Cell;
 import ua.com.javarush.gnew.Field.Field;
-import ua.com.javarush.gnew.Plant.Plant;
+import ua.com.javarush.gnew.Diet.Herbivores;
 
 @Data
 @Getter
 
 
-public abstract class Animal {
+public abstract class Animal implements Herbivores {
     private String name;
     private double weight;
     private int quantity;
@@ -28,15 +28,7 @@ public abstract class Animal {
         this.alive = true;
     }
 
-    public int getWeight() {
-        return (int) weight;
-    }
-
-    protected void log(String message) {
-        System.out.println("[Animal] " + message);
-    }
-
-    public void increaseSaturation(double food) {
+     public void increaseSaturation(double food) {
         saturation += food;
         if (saturation > foodNeeded) {
             saturation =  foodNeeded;
@@ -49,15 +41,6 @@ public abstract class Animal {
             saturation = 0;
         }
     }
-    public boolean eatPlant(Plant plant) {
-        if (isHerbivore()) {
-            this.satiation += plant.getWeight();
-            return true;
-        }
-        return false;
-    }
-
-    public abstract boolean isHerbivore();
 
     public abstract void move(Cell[][] cells, int x, int y);
 
