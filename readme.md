@@ -1,8 +1,10 @@
-# JavaRush M2 Final project group `NEW`
+# Island
 
+## Description:
+### The project was created to demonstrate the work of multithreading and generics, as well as the work of OOP.
 
-1. Зробити форк
-2. Клонувати проєкт
-3. Створити модуль
-4. Виконати проєкт
-5. Створити pull request
+1. 8 species of animals (3 predators and 5 herbivores);
+2. Playing field;
+3. Simple code)))
+
+### This is basic functionality. The project will be improved. There will be more work from the frontend
