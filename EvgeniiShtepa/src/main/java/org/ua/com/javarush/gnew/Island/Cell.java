@@ -10,9 +10,13 @@ import java.util.Map;
 
 @Getter
 public class Cell {
+    int x;
+    int y;
     private Map<Class<? extends Organism>, List<Organism>> residents;
 
-    public Cell() {
+    public Cell(int x, int y) {
+        this.x = x;
+        this.y = y;
         this.residents = new HashMap<>();
     }
 
@@ -25,7 +29,7 @@ public class Cell {
         animals.remove(0);
     }
 
-    public List<Organism> getAnimalByType(Organism organism){
+    public List<Organism> getAnimalByType(Organism organism) {
         Class<? extends Organism> animalClass = organism.getClass();
         return residents.get(animalClass);
     }

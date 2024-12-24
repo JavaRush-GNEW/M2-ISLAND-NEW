@@ -8,7 +8,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class IslandMap {
     private static IslandMap INSTANCE;
+    @Getter
     private final int width = 10;
+    @Getter
     private final int height = 10;
     @Getter
     private final Cell[][] cells = new Cell[width][height]; //TODO: добавить XML для параметров острова
@@ -25,22 +27,20 @@ public class IslandMap {
 
 
     public void initIsland(List<Class<? extends Organism>> animalClasses) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                cells[i][j] = createPopulatedCell(animalClasses);
+        for (int y = 0; y < width; y++) {
+            for (int x = 0; x < height; x++) {
+                cells[y][x] = createPopulatedCell(animalClasses, x, y);
             }
         }
     }
 
-    private Cell createPopulatedCell(List<Class<? extends Organism>> animalClasses) {
-        Cell cell = new Cell();
+    private Cell createPopulatedCell(List<Class<? extends Organism>> animalClasses, int x, int y) {
+        Cell cell = new Cell(x, y);
         for (Class<? extends Organism> animalClass : animalClasses) {
             try {
                 Organism organism = animalClass.getDeclaredConstructor().newInstance();
-
-                int count = ThreadLocalRandom.current().nextInt(1, organism.getMaxCountPerCell() + 1);
-
-                for (int i = 0; i < count; i++) {
+                int animalCountPerCell = ThreadLocalRandom.current().nextInt(1, organism.getMAX_CELL_COUNT() + 1);
+                for (int i = 0; i < animalCountPerCell; i++) {
                     Organism newAnimal = animalClass.getDeclaredConstructor().newInstance();
                     cell.addAnimal(newAnimal);
                 }

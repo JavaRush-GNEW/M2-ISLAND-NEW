@@ -1,6 +1,5 @@
 package org.ua.com.javarush.gnew.Island;
 
-import org.ua.com.javarush.gnew.model.Animals.Intarfaces.LifeCycle;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
 import java.util.List;
@@ -22,9 +21,9 @@ public class IslandManager {
         for (Cell[] cell : cells) { //Массив клеток острова
             for (Cell currentCell : cell) { // Конкретная клетка острова
                 Set<Class<? extends Organism>> classes = currentCell.getResidents().keySet(); // Сет классов в клетке
-                for (Class<? extends Organism> clazz: classes){ //Конкретный класс
+                for (Class<? extends Organism> clazz : classes) { //Конкретный класс
                     List<Organism> organisms = currentCell.getResidents().get(clazz); //Коллекция животных выбранного класса
-                    for (Organism organism: organisms){ // конкретное животное
+                    for (Organism organism : organisms) { // конкретное животное
                         processCell(currentCell, organism); //Запуск последовательности действий конкретного животного
                     }
                 }
@@ -32,15 +31,18 @@ public class IslandManager {
         }
     }
 
-    private void processCell (Cell cell, Organism organism) {
-        synchronized (cell){
-            if (organism instanceof LifeCycle) {
-                LifeCycle lifeCycle = (LifeCycle) organism;
+    private void processCell(Cell currentCell, Organism organism) {
+        synchronized (currentCell) {
+            int maxStepsCount = organism.getMAX_STEPS_COUNT();
 
-                lifeCycle.move(islandMap, cell);
-                lifeCycle.eat(cell);
-                lifeCycle.reproduce(cell);
+            for (int i = 0; i < maxStepsCount; i++) {
+                organism.move(islandMap, currentCell);
             }
+            organism.eat(currentCell);
+
+
+            organism.reproduce(currentCell);
+
         }
     }
 }
