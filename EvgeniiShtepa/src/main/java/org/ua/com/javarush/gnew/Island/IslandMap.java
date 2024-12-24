@@ -17,14 +17,14 @@ public class IslandMap {
     }
 
     public static IslandMap getInstance() {
-        if (INSTANCE == null){
+        if (INSTANCE == null) {
             INSTANCE = new IslandMap();
         }
         return INSTANCE;
     }
 
-    
-     public void initIsland(List<Class<? extends Organism>> animalClasses) {
+
+    public void initIsland(List<Class<? extends Organism>> animalClasses) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 cells[i][j] = createPopulatedCell(animalClasses);
@@ -34,13 +34,13 @@ public class IslandMap {
 
     private Cell createPopulatedCell(List<Class<? extends Organism>> animalClasses) {
         Cell cell = new Cell();
-        for (Class<? extends Organism> animalClass : animalClasses){
+        for (Class<? extends Organism> animalClass : animalClasses) {
             try {
                 Organism organism = animalClass.getDeclaredConstructor().newInstance();
 
                 int count = ThreadLocalRandom.current().nextInt(1, organism.getMaxCountPerCell() + 1);
 
-                for (int i = 0; i < count; i++){
+                for (int i = 0; i < count; i++) {
                     Organism newAnimal = animalClass.getDeclaredConstructor().newInstance();
                     cell.addAnimal(newAnimal);
                 }
