@@ -26,7 +26,7 @@ public class Cell {
 
     public void removeAnimal(Organism organism) {
         List<Organism> animals = residents.get(organism.getClass());
-        animals.remove(0);
+        animals.remove(organism);
     }
 
     public List<Organism> getAnimalByType(Organism organism) {

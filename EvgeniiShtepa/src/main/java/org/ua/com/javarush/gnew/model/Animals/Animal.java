@@ -3,8 +3,11 @@ package org.ua.com.javarush.gnew.model.Animals;
 import lombok.Getter;
 import org.ua.com.javarush.gnew.Island.Cell;
 import org.ua.com.javarush.gnew.Island.IslandMap;
+import org.ua.com.javarush.gnew.config.Direction;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
@@ -13,45 +16,58 @@ public abstract class Animal implements Organism {
     private final int MAX_STEPS_COUNT;
     private final int WEIGHT;
     private final int FOOD_KG_REQUIRED;
+    private int satiety;
 
 
     protected Animal(int maxCellCount, int maxStepsCount, int weight, int foodKgRequired) {
-        MAX_CELL_COUNT = maxCellCount;
-        MAX_STEPS_COUNT = maxStepsCount;
-        WEIGHT = weight;
-        FOOD_KG_REQUIRED = foodKgRequired;
+        this.MAX_CELL_COUNT = maxCellCount;
+        this.MAX_STEPS_COUNT = maxStepsCount;
+        this.WEIGHT = weight;
+        this.FOOD_KG_REQUIRED = foodKgRequired;
+        this.satiety = 0;
     }
 
     public void move(IslandMap island, Cell currentCell) {
-        int cellX = currentCell.getX();
-        int cellY = currentCell.getY();
-        int direction = ThreadLocalRandom.current().nextInt(4); // 0: вверх, 1: вниз, 2: влево, 3: вправо
-        int newX = cellX;
-        int newY = cellY;
+        int steps = getMAX_STEPS_COUNT();
+        int x = currentCell.getX();
+        int y = currentCell.getY();
 
-        if (direction == 0) {
-            newY++;
-        } else if (direction == 1) {
-            newY--;
-        } else if (direction == 2) {
-            newX--;
-        } else {
-            newX++;
+        int width = island.getWidth();
+        int height = island.getHeight();
+
+        for (int i = 0; i < steps; i++) {
+            List<Direction> possibleDirections = new ArrayList<>();
+
+            if (y + 1 < height) {
+                possibleDirections.add(Direction.UP);
+            }
+            if (y - 1 >= 0) {
+                possibleDirections.add(Direction.DOWN);
+            }
+            if (x - 1 >= 0) {
+                possibleDirections.add(Direction.LEFT);
+            }
+            if (x + 1 < width) {
+                possibleDirections.add(Direction.RIGHT);
+            }
+            if (possibleDirections.isEmpty()) {
+                continue;
+            }
+
+            Direction chosen = possibleDirections.get(ThreadLocalRandom.current().nextInt(possibleDirections.size()));
+            switch (chosen) {
+                case UP -> y++;
+                case DOWN -> y--;
+                case LEFT -> x--;
+                case RIGHT -> x++;
+            }
         }
 
-        Cell[][] cells = island.getCells();
-        if ((newX >= 0 && newX < island.getWidth() && newY >= 0 && newY < island.getHeight())) {// ширина || висота
-            Cell newCell = cells[newY][newX];
+        if (x != currentCell.getX() || y != currentCell.getY()) {
             currentCell.removeAnimal(this);
-            newCell.addAnimal(this);
+            island.getCells()[y][x].addAnimal(this);
+            satiety--;
         }
-
-
-    }
-
-
-    public void eat(Cell currentCell) {
-
     }
 
     public void reproduce(Cell currentCell) {
