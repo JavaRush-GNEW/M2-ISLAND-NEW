@@ -15,8 +15,8 @@ public class Main {
         IslandMap islandMap = IslandMap.getInstance();
         List<Class<? extends Organism>> animals = List.of(Wolf.class, Horse.class);
         islandMap.initIsland(animals);
-        IslandManager islandManager = new IslandManager();
-        islandManager.startSimulation();
+        IslandManager islandManager = IslandManager.getInstance();
+        islandManager.simulateTick();
 
     }
 }

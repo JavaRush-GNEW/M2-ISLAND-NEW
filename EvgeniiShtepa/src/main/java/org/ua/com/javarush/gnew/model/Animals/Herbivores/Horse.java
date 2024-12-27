@@ -1,11 +1,17 @@
 package org.ua.com.javarush.gnew.model.Animals.Herbivores;
 
+import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
+import java.util.Map;
 
-import org.ua.com.javarush.gnew.Island.Cell;
+public class Horse extends Herbivores {
 
-public class Horse extends Herbivores{
     public Horse() {
-        super(2, 20, 4, 60);
+        super(2, 1, 4, 60);
     }
 
+    @Override
+    public Map<Class<? extends Organism>, Integer> getEatProbability() {
+        return Map.of();
+    }
 }
+

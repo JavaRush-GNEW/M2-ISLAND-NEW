@@ -10,16 +10,16 @@ import java.util.Map;
 
 
 public class Wolf extends Predator {
-    @Getter
-    private static final Map<Class<? extends Organism>, Integer> EAT_PROBABILITY = new HashMap<>();
 
-    static {
+    private final Map<Class<? extends Organism>, Integer> EAT_PROBABILITY = new HashMap<>();
+
+    public Wolf() {
+        super(2, 1, 50, 8);
         EAT_PROBABILITY.put(Horse.class, 10);
     }
 
-    public Wolf() {
-        super(2, 3, 50, 8);
+    @Override
+    public Map<Class<? extends Organism>, Integer> getEatProbability() {
+        return EAT_PROBABILITY;
     }
-
-
 }

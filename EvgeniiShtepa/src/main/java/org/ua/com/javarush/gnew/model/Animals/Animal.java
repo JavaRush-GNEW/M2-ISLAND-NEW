@@ -1,11 +1,11 @@
 package org.ua.com.javarush.gnew.model.Animals;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.ua.com.javarush.gnew.Island.Cell;
 import org.ua.com.javarush.gnew.Island.IslandMap;
 import org.ua.com.javarush.gnew.config.Direction;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,6 +16,7 @@ public abstract class Animal implements Organism {
     private final int MAX_STEPS_COUNT;
     private final int WEIGHT;
     private final int FOOD_KG_REQUIRED;
+    @Setter
     private int satiety;
 
 
@@ -24,7 +25,7 @@ public abstract class Animal implements Organism {
         this.MAX_STEPS_COUNT = maxStepsCount;
         this.WEIGHT = weight;
         this.FOOD_KG_REQUIRED = foodKgRequired;
-        this.satiety = 0;
+        this.satiety = foodKgRequired / 2;
     }
 
     public void move(IslandMap island, Cell currentCell) {
@@ -67,11 +68,30 @@ public abstract class Animal implements Organism {
             currentCell.removeAnimal(this);
             island.getCells()[y][x].addAnimal(this);
             satiety--;
+
         }
     }
 
     public void reproduce(Cell currentCell) {
+        int chance = ThreadLocalRandom.current().nextInt(100);
+        int animalCountInCell = currentCell.getResidents().get(this.getClass()).size();
+        if (animalCountInCell < this.MAX_CELL_COUNT) {
+            if (chance < 30) {
+                try {
+                    currentCell.addAnimal(this.getClass().getDeclaredConstructor().newInstance());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
+            }
+        }
     }
 
+    @Override
+    public void isAnimalAlive(Cell currentCell) {
+        if (satiety == 0) {
+            currentCell.removeAnimal(this);
+
+        }
+    }
 }
