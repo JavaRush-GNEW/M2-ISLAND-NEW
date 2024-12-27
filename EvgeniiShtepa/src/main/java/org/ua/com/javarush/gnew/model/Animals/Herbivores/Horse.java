@@ -6,7 +6,7 @@ import java.util.Map;
 public class Horse extends Herbivores {
 
     public Horse() {
-        super(2, 1, 4, 60);
+        super(20, 4, 400, 60);
     }
 
     @Override

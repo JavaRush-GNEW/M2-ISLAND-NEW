@@ -11,8 +11,8 @@ import java.util.Map;
 
 @Getter
 public class Cell {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     @Setter
     private int grassAmount;
     private Map<Class<? extends Organism>, List<Organism>> residents;
@@ -32,12 +32,5 @@ public class Cell {
         List<Organism> animals = residents.get(organism.getClass());
         animals.remove(organism);
     }
-
-    public List<Organism> getAnimalByType(Organism organism) {
-        Class<? extends Organism> animalClass = organism.getClass();
-        return residents.get(animalClass);
-    }
-
-
 }
 
