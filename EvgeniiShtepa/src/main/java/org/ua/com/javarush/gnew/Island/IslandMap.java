@@ -9,11 +9,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class IslandMap {
     private static IslandMap INSTANCE;
     @Getter
-    private final int width = 10;
+    private final int width = 120; //ширина
     @Getter
-    private final int height = 10;
+    private final int height = 80; //высота
     @Getter
-    private final Cell[][] cells = new Cell[width][height]; //TODO: добавить XML для параметров острова
+    private final Cell[][] cells = new Cell[height][width]; //TODO: добавить XML для параметров острова
 
     private IslandMap() {
     }
@@ -27,8 +27,8 @@ public class IslandMap {
 
 
     public void initIsland(List<Class<? extends Organism>> animalClasses) {
-        for (int y = 0; y < width; y++) {
-            for (int x = 0; x < height; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 cells[y][x] = createPopulatedCell(animalClasses, x, y);
             }
         }

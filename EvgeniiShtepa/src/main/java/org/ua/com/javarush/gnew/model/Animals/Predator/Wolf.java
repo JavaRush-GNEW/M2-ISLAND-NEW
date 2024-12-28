@@ -1,7 +1,7 @@
 package org.ua.com.javarush.gnew.model.Animals.Predator;
 
 
-import lombok.Getter;
+
 import org.ua.com.javarush.gnew.model.Animals.Herbivores.Horse;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
