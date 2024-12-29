@@ -1,7 +1,7 @@
 package org.ua.com.javarush.gnew.Island;
 
 
-import org.ua.com.javarush.gnew.config.Statistics;
+import org.ua.com.javarush.gnew.Config.Statistics;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
 import java.util.*;

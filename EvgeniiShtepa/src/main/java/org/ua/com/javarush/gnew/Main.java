@@ -1,7 +1,7 @@
 package org.ua.com.javarush.gnew;
 
 
-import org.ua.com.javarush.gnew.config.ThreadManager;
+import org.ua.com.javarush.gnew.Config.ThreadManager;
 import org.ua.com.javarush.gnew.model.Animals.Herbivores.Horse;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 import org.ua.com.javarush.gnew.model.Animals.Predator.Wolf;

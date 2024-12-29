@@ -1,4 +1,4 @@
-package org.ua.com.javarush.gnew.config;
+package org.ua.com.javarush.gnew.Config;
 
 
 import org.ua.com.javarush.gnew.Island.Cell;

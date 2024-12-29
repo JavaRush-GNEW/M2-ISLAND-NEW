@@ -1,8 +1,10 @@
 package org.ua.com.javarush.gnew.model.Animals.Herbivores;
 
+import org.ua.com.javarush.gnew.Annotations.AnimalsUnicode;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 import java.util.Map;
 
+//@AnimalsUnicode(value = "🐎")
 public class Horse extends Herbivores {
 
     public Horse() {

@@ -1,8 +1,8 @@
-package org.ua.com.javarush.gnew.config;
+package org.ua.com.javarush.gnew.Config;
 
+import org.ua.com.javarush.gnew.Annotations.AnimalsUnicode;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,7 +36,11 @@ public class Statistics {
             System.out.println("На острове нет животных");
         } else {
             for (Map.Entry<Class<? extends Organism>, Integer> entry : animalsCount.entrySet()) {
-                System.out.println("Вид [" + entry.getKey() .getSimpleName() + "] Количество: " + entry.getValue());
+                String unicode = "♦\uFE0F";
+                if (!(entry.getKey().getAnnotation(AnimalsUnicode.class) == null)){
+                    unicode = entry.getKey().getAnnotation(AnimalsUnicode.class).value();
+                }
+                System.out.println("Вид [" + entry.getKey() .getSimpleName() + unicode + "] Количество: " + entry.getValue());
             }
         }
         System.out.println("=====================================");
