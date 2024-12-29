@@ -15,6 +15,7 @@ public class Main {
 
         ThreadManager threadManager = ThreadManager.getINSTANCE();
         threadManager.startGame(animals);
+        threadManager.startCollectStatistics();
 
 
     }

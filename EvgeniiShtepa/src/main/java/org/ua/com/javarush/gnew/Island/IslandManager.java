@@ -1,6 +1,7 @@
 package org.ua.com.javarush.gnew.Island;
 
 
+import org.ua.com.javarush.gnew.config.Statistics;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
 import java.util.*;
@@ -20,7 +21,6 @@ public class IslandManager {
         return INSTANCE;
     }
 
-
     public void processCell(Cell currentCell) {
         synchronized (currentCell) {
             Set<Class<? extends Organism>> classes = new HashSet<>(currentCell.getResidents().keySet()); // Сет классов в клетке
@@ -39,15 +39,12 @@ public class IslandManager {
                     int maxStepsCount = organism.getMAX_STEPS_COUNT();
                     organism.eat(currentCell);
                     organism.reproduce(currentCell);
+                    organism.move(islandMap, currentCell);
 
-                    for (int i = 0; i < maxStepsCount; i++) {
-                        organism.move(islandMap, currentCell);
-                    }
                 }
             }
         }
     }
-
 
     public void growGrassInCells() {
         Cell[][] cells = islandMap.getCells();
@@ -58,5 +55,24 @@ public class IslandManager {
         }
     }
 
+    public void collectStatistics() {
+        Statistics statistics = Statistics.getInstance();
+        statistics.reset();
 
+        Cell[][] cells = islandMap.getCells();
+        for (Cell[] row: cells) {
+            for (Cell cell: row) {
+                for (Map.Entry<Class<? extends Organism>, List<Organism>> entry: cell.getResidents().entrySet()){
+                    Class<? extends Organism> clazz = entry.getKey();
+                    List<Organism> list = entry.getValue();
+                    int count = (list == null) ? 0 : list.size();
+                    statistics.addToStatistic(clazz, count);
+                }
+            }
+        }
+    }
+
+    public void printStatistics() {
+        Statistics.getInstance().printStatistic();
+    }
 }

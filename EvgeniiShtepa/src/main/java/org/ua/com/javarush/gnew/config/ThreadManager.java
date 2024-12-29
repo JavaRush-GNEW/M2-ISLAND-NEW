@@ -4,10 +4,7 @@ package org.ua.com.javarush.gnew.config;
 import org.ua.com.javarush.gnew.Island.Cell;
 import org.ua.com.javarush.gnew.Island.IslandManager;
 import org.ua.com.javarush.gnew.Island.IslandMap;
-import org.ua.com.javarush.gnew.Main;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
-
-
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,17 +14,20 @@ public class ThreadManager {
 
     private IslandMap islandMap;
     private IslandManager islandManager;
-    private ScheduledExecutorService executorService;
+    private ScheduledExecutorService executorServiceForSimulatuin;
+    private ScheduledExecutorService executorForStatistics;
+
     private static ThreadManager INSTANCE;
     private int islandHeight;
     private int threadNum;
 
     private ThreadManager() {
         this.threadNum = 4;
-        this.executorService = Executors.newScheduledThreadPool(threadNum);
+        this.executorServiceForSimulatuin = Executors.newScheduledThreadPool(threadNum);
         this.islandMap = IslandMap.getInstance();
         this.islandManager = IslandManager.getInstance();
         this.islandHeight = islandMap.getHeight();
+        this.executorForStatistics = Executors.newScheduledThreadPool(1);
     }
 
     public static ThreadManager getINSTANCE() {
@@ -47,7 +47,7 @@ public class ThreadManager {
         for (int i = 0; i < threadNum; i++) {
             int threadIndex = i;
 
-            executorService.scheduleAtFixedRate(() -> {
+            executorServiceForSimulatuin.scheduleAtFixedRate(() -> {
                 int start = cellsPerThread * threadIndex;
                 int end = Math.min(start + cellsPerThread, islandHeight);
                 for (int j = start; j < end; j++) {
@@ -55,13 +55,17 @@ public class ThreadManager {
                     for (Cell currentCell: row) {
                         islandManager.processCell(currentCell);
                     }
-
                 }
-
             }, 0, 5, TimeUnit.SECONDS);
-
-
-
         }
     }
+
+    public void startCollectStatistics() {
+        executorForStatistics.scheduleAtFixedRate(() -> {
+            islandManager.collectStatistics();
+            islandManager.printStatistics();
+        }, 0, 5, TimeUnit.SECONDS);
+    }
+
+
 }
