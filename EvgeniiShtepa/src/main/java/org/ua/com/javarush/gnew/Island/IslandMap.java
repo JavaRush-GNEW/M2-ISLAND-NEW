@@ -1,6 +1,7 @@
 package org.ua.com.javarush.gnew.Island;
 
 import lombok.Getter;
+import org.ua.com.javarush.gnew.exeptions.PopulateCellException;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -46,7 +47,7 @@ public class IslandMap {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace(); //TODO: добавить эксепшн
+                throw new PopulateCellException("Ошибка создания клетки с животными", e);
             }
         }
         return cell;

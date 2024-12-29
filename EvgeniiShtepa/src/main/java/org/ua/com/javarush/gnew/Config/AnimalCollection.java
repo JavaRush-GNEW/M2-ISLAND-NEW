@@ -32,7 +32,6 @@ public class AnimalCollection {
             if (Organism.class.isAssignableFrom(clazz)) {
                 animals.add(clazz.asSubclass(Organism.class));
             }
-            System.out.println(animals);
         }
         return animals;
     }

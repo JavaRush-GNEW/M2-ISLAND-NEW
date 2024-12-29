@@ -32,12 +32,5 @@ public class Cell {
         List<Organism> animals = residents.get(organism.getClass());
         animals.remove(organism);
     }
-
-    public List<Organism> getAnimalByType(Organism organism) {
-        Class<? extends Organism> animalClass = organism.getClass();
-        return residents.get(animalClass);
-    }
-
-
 }
 
