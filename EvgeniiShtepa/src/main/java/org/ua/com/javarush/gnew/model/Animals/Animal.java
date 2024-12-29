@@ -4,8 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.ua.com.javarush.gnew.Island.Cell;
 import org.ua.com.javarush.gnew.Island.IslandMap;
-import org.ua.com.javarush.gnew.config.Direction;
+import org.ua.com.javarush.gnew.Config.Direction;
+import org.ua.com.javarush.gnew.exeptions.ReproduceException;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -80,7 +83,7 @@ public abstract class Animal implements Organism {
                 try {
                     currentCell.addAnimal(this.getClass().getDeclaredConstructor().newInstance());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new ReproduceException("Не удалось размножить класс " + this.getClass().getSimpleName(), e);
                 }
 
             }

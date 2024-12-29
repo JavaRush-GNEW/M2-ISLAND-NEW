@@ -1,8 +1,7 @@
 package org.ua.com.javarush.gnew.Island;
 
 
-
-import org.ua.com.javarush.gnew.config.Statistics;
+import org.ua.com.javarush.gnew.Config.Statistics;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
 import java.util.*;
@@ -22,64 +21,58 @@ public class IslandManager {
         return INSTANCE;
     }
 
-
-    public void processCell(Cell currentCell){
+    public void processCell(Cell currentCell) {
         synchronized (currentCell) {
             Set<Class<? extends Organism>> classes = new HashSet<>(currentCell.getResidents().keySet()); // Сет классов в клетке
-            for (Class<? extends Organism> clazz : classes) {
-                List<Organism> organisms = currentCell.getResidents().get(clazz);
+            for (Class<? extends Organism> clazz : classes) { //Конкретный класс
+                List<Organism> organisms = currentCell.getResidents().get(clazz);//Коллекция животных выбранного класса
                 if (organisms == null || organisms.isEmpty()) {
                     continue;
                 }
                 List<Organism> copyOrganisms = new ArrayList<>(organisms);
-                for (Organism organism : copyOrganisms) {
+
+                for (Organism organism : copyOrganisms) { // конкретное животное
                     organism.isAnimalAlive(currentCell);
                     if (!organisms.contains(organism)) {
                         continue;
                     }
-
+                    int maxStepsCount = organism.getMAX_STEPS_COUNT();
                     organism.eat(currentCell);
                     organism.reproduce(currentCell);
-                    int maxSteps = organism.getMAX_STEPS_COUNT();
-                    for (int i = 0; i < maxSteps; i++) {
-                        organism.move(islandMap, currentCell);
-                    }
+                    organism.move(islandMap, currentCell);
+
                 }
             }
         }
     }
 
-
-
-    public void growGrassInCells(){
+    public void growGrassInCells() {
         Cell[][] cells = islandMap.getCells();
-        for (Cell[] cellsArray: cells) {
-            for (Cell cell: cellsArray) {
+        for (Cell[] cellsArray : cells) {
+            for (Cell cell : cellsArray) {
                 cell.setGrassAmount(cell.getGrassAmount() + 20);
             }
         }
     }
 
     public void collectStatistics() {
-        Statistics statistics = Statistics.getINSTANCE();
+        Statistics statistics = Statistics.getInstance();
         statistics.reset();
 
         Cell[][] cells = islandMap.getCells();
         for (Cell[] row: cells) {
             for (Cell cell: row) {
-                for (var entry: cell.getResidents().entrySet()){
+                for (Map.Entry<Class<? extends Organism>, List<Organism>> entry: cell.getResidents().entrySet()){
                     Class<? extends Organism> clazz = entry.getKey();
                     List<Organism> list = entry.getValue();
-                    int count = (list == null) ? 0: list.size();
-                    if (count > 0) {
-                        statistics.addCount(clazz, count);
-                    }
+                    int count = (list == null) ? 0 : list.size();
+                    statistics.addToStatistic(clazz, count);
                 }
             }
         }
     }
 
-    public void printStatistic(){
-        Statistics.getINSTANCE().print();
+    public void printStatistics() {
+        Statistics.getInstance().printStatistic();
     }
 }

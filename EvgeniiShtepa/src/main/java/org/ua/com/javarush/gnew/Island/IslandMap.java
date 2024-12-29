@@ -1,19 +1,20 @@
 package org.ua.com.javarush.gnew.Island;
 
 import lombok.Getter;
+import org.ua.com.javarush.gnew.exeptions.PopulateCellException;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-    public class IslandMap {
-        private static IslandMap INSTANCE;
-        @Getter
-        private final int width = 120; //ширина
-        @Getter
-        private final int height = 80; //высота
-        @Getter
-        private final Cell[][] cells = new Cell[height][width]; //TODO: добавить XML для параметров острова
+public class IslandMap {
+    private static IslandMap INSTANCE;
+    @Getter
+    private final int width = 120; //ширина
+    @Getter
+    private final int height = 80; //высота
+    @Getter
+    private final Cell[][] cells = new Cell[height][width]; //TODO: добавить XML для параметров острова
 
     private IslandMap() {
     }
@@ -27,8 +28,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
     public void initIsland(List<Class<? extends Organism>> animalClasses) {
-        for (int y = 0; y < height; y++) {  // y < 80
-            for (int x = 0; x < width; x++) { // x < 120
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 cells[y][x] = createPopulatedCell(animalClasses, x, y);
             }
         }
@@ -46,7 +47,7 @@ import java.util.concurrent.ThreadLocalRandom;
                 }
 
             } catch (Exception e) {
-                e.printStackTrace(); //TODO: добавить эксепшн
+                throw new PopulateCellException("Ошибка создания клетки с животными", e);
             }
         }
         return cell;
