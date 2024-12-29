@@ -4,22 +4,20 @@ package org.ua.com.javarush.gnew.Config;
 import org.ua.com.javarush.gnew.Island.Cell;
 import org.ua.com.javarush.gnew.Island.IslandManager;
 import org.ua.com.javarush.gnew.Island.IslandMap;
-import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ThreadManager {
 
-    private IslandMap islandMap;
-    private IslandManager islandManager;
-    private ScheduledExecutorService executorServiceForSimulatuin;
-    private ScheduledExecutorService executorForStatistics;
+    private final IslandMap islandMap;
+    private final IslandManager islandManager;
+    private final ScheduledExecutorService executorServiceForSimulatuin;
+    private final ScheduledExecutorService executorForStatistics;
 
     private static ThreadManager INSTANCE;
-    private int islandHeight;
-    private int threadNum;
+    private final int islandHeight;
+    private final int threadNum;
 
     private ThreadManager() {
         this.threadNum = 4;
@@ -30,7 +28,7 @@ public class ThreadManager {
         this.executorForStatistics = Executors.newScheduledThreadPool(1);
     }
 
-    public static ThreadManager getINSTANCE() {
+    public static ThreadManager getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new ThreadManager();
         }
@@ -38,8 +36,8 @@ public class ThreadManager {
     }
 
 
-    public void startGame(List<Class<? extends Organism>> animals) {
-        islandMap.initIsland(animals);
+    public void startGame() {
+        islandMap.initIsland(AnimalCollection.getInstane().getAnimals());
         Cell[][] cells = islandMap.getCells();
         islandManager.growGrassInCells();
         int cellsPerThread = (int) Math.ceil((double) islandHeight / threadNum);

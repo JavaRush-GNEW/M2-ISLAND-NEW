@@ -1,14 +1,13 @@
 package org.ua.com.javarush.gnew.model.Animals.Predator;
 
-
-
+import org.ua.com.javarush.gnew.Annotations.Animal;
 import org.ua.com.javarush.gnew.Annotations.AnimalsUnicode;
 import org.ua.com.javarush.gnew.model.Animals.Herbivores.Horse;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
-
 import java.util.HashMap;
 import java.util.Map;
 
+@Animal
 @AnimalsUnicode(value = "🐺")
 public class Wolf extends Predator {
 
