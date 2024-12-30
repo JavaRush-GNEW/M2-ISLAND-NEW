@@ -23,7 +23,7 @@ public abstract class Predator extends Animal {
 
             Optional<Class<? extends Organism>> meal = eatProbabilityAnimals.stream()
                     .filter(cellAnimalsClasses::contains)
-                    .findFirst();
+                    .findAny();
 
             meal.ifPresent(clazz -> {
                 int eatProbability = this.getEatProbability().get(clazz);
