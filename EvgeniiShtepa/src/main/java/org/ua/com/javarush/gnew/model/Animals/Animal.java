@@ -97,4 +97,9 @@ public abstract class Animal implements Organism {
 
         }
     }
+
+    @Override
+    public int getWeight() {
+        return WEIGHT;
+    }
 }

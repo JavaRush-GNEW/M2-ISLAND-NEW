@@ -8,13 +8,14 @@ import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Animal
-@AnimalsUnicode(value = "🐻")
-public class Bear extends Predator{
+@AnimalsUnicode(value = "\uD83D\uDC0D")
+public class Snake extends Predator {
     private final Map<Class<? extends Organism>, Integer> EAT_PROBABILITY = new HashMap<>();
 
-    public Bear() {
-        super(5, 2, 500, 80);
+    public Snake() {
+        super(30, 1, 15, 3);
         EAT_PROBABILITY.put(Horse.class, 0);
     }
 
@@ -23,3 +24,4 @@ public class Bear extends Predator{
         return EAT_PROBABILITY;
     }
 }
+

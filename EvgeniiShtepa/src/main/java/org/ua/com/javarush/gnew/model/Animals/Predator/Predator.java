@@ -30,9 +30,11 @@ public abstract class Predator extends Animal {
                 int chance = ThreadLocalRandom.current().nextInt(100);
                 if (chance < eatProbability) {
                     Optional<Organism> first = currentCell.getResidents().get(clazz).stream().findFirst();
-                    first.ifPresent(currentCell::removeAnimal);
-                    setSatiety(getSatiety() + 1);
-
+                    first.ifPresent(prey -> {
+                        currentCell.removeAnimal(prey);
+                        int prayWeight = prey.getWeight();
+                        setSatiety(getSatiety() + prayWeight);
+                    });
                 }
             });
         }

@@ -9,4 +9,5 @@ public interface Organism extends LifeCycle{
     int getMAX_STEPS_COUNT();
     Map<Class<? extends Organism>, Integer> getEatProbability();
     void isAnimalAlive(Cell cell);
+    int getWeight();
 }
