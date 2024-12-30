@@ -2,6 +2,8 @@ package org.ua.com.javarush.gnew.Island;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.ua.com.javarush.gnew.Config.AppConfig;
+import org.ua.com.javarush.gnew.Config.ConfigLoader;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
 import java.util.ArrayList;
@@ -18,10 +20,11 @@ public class Cell {
     private Map<Class<? extends Organism>, List<Organism>> residents;
 
     public Cell(int x, int y) {
+        AppConfig.IslandConfig config = ConfigLoader.getConfig().getIsland();
         this.x = x;
         this.y = y;
         this.residents = new HashMap<>();
-        this.grassAmount = 20;
+        this.grassAmount = config.getStartGrassAmountPerCell();
     }
 
     public void addAnimal(Organism organism) {

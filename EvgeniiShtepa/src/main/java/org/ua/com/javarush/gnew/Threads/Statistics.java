@@ -1,4 +1,4 @@
-package org.ua.com.javarush.gnew.Config;
+package org.ua.com.javarush.gnew.Threads;
 
 import org.ua.com.javarush.gnew.Annotations.AnimalsUnicode;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
@@ -36,7 +36,7 @@ public class Statistics {
             System.out.println("На острове нет животных");
         } else {
             for (Map.Entry<Class<? extends Organism>, Integer> entry : animalsCount.entrySet()) {
-                String unicode = "♦\uFE0F";
+                String unicode = "♦️";
                 if (!(entry.getKey().getAnnotation(AnimalsUnicode.class) == null)){
                     unicode = entry.getKey().getAnnotation(AnimalsUnicode.class).value();
                 }

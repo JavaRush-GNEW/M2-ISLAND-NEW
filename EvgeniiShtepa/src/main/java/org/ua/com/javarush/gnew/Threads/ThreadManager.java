@@ -1,9 +1,11 @@
-package org.ua.com.javarush.gnew.Config;
+package org.ua.com.javarush.gnew.Threads;
 
 
+import org.ua.com.javarush.gnew.Config.AnimalCollection;
 import org.ua.com.javarush.gnew.Island.Cell;
 import org.ua.com.javarush.gnew.Island.IslandManager;
 import org.ua.com.javarush.gnew.Island.IslandMap;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

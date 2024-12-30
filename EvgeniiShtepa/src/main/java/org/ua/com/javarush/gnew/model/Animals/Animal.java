@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.ua.com.javarush.gnew.Island.Cell;
 import org.ua.com.javarush.gnew.Island.IslandMap;
-import org.ua.com.javarush.gnew.Config.Direction;
 import org.ua.com.javarush.gnew.exeptions.ReproduceException;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

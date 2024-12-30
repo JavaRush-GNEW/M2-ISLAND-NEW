@@ -1,7 +1,7 @@
 package org.ua.com.javarush.gnew;
 
 
-import org.ua.com.javarush.gnew.Config.ThreadManager;
+import org.ua.com.javarush.gnew.Threads.ThreadManager;
 
 
 public class Main {

@@ -1,6 +1,8 @@
 package org.ua.com.javarush.gnew.Island;
 
 import lombok.Getter;
+import org.ua.com.javarush.gnew.Config.AppConfig;
+import org.ua.com.javarush.gnew.Config.ConfigLoader;
 import org.ua.com.javarush.gnew.exeptions.PopulateCellException;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 import java.util.List;
@@ -10,13 +12,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class IslandMap {
     private static IslandMap INSTANCE;
     @Getter
-    private final int width = 120; //ширина
+    private final int width;
     @Getter
-    private final int height = 80; //высота
+    private final int height;
     @Getter
-    private final Cell[][] cells = new Cell[height][width]; //TODO: добавить XML для параметров острова
+    private final Cell[][] cells;
 
     private IslandMap() {
+        AppConfig.IslandConfig config = ConfigLoader.getConfig().getIsland();
+        this.width = config.getWidth();
+        this.height = config.getHeight();
+        cells = new Cell[height][width];
     }
 
     public static IslandMap getInstance() {

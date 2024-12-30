@@ -1,7 +1,9 @@
 package org.ua.com.javarush.gnew.Island;
 
 
-import org.ua.com.javarush.gnew.Config.Statistics;
+import org.ua.com.javarush.gnew.Config.AppConfig;
+import org.ua.com.javarush.gnew.Config.ConfigLoader;
+import org.ua.com.javarush.gnew.Threads.Statistics;
 import org.ua.com.javarush.gnew.model.Animals.Intarfaces.Organism;
 
 import java.util.*;
@@ -9,9 +11,11 @@ import java.util.*;
 public class IslandManager {
     private IslandMap islandMap = IslandMap.getInstance();
     private static IslandManager INSTANCE;
+    private AppConfig.IslandConfig config;
 
 
     private IslandManager() {
+        config = ConfigLoader.getConfig().getIsland();
     }
 
     public static IslandManager getInstance() {
@@ -36,7 +40,7 @@ public class IslandManager {
                     if (!organisms.contains(organism)) {
                         continue;
                     }
-                    int maxStepsCount = organism.getMAX_STEPS_COUNT();
+
                     organism.eat(currentCell);
                     organism.reproduce(currentCell);
                     organism.move(islandMap, currentCell);
@@ -50,7 +54,7 @@ public class IslandManager {
         Cell[][] cells = islandMap.getCells();
         for (Cell[] cellsArray : cells) {
             for (Cell cell : cellsArray) {
-                cell.setGrassAmount(cell.getGrassAmount() + 20);
+                cell.setGrassAmount(cell.getGrassAmount() + config.getGrowGrassCount());
             }
         }
     }
