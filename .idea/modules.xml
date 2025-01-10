@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/M2-ISLAND-Svitlana.iml" filepath="$PROJECT_DIR$/.idea/M2-ISLAND-Svitlana.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Svitlana/Svitlana.iml" filepath="$PROJECT_DIR$/Svitlana/Svitlana.iml" />
-    </modules>
-  </component>
-</project>
