@@ -1,0 +1,6 @@
+{
+  "weight" : 1,
+  "maxCellQuantity" : 200,
+  "maxStep" : 4,
+  "maxFoodWeight" : 0.15
+}

@@ -1,0 +1,5 @@
+island:
+  width: 120
+  height: 80
+  startGrassAmountPerCell: 20
+  growGrassCount: 20

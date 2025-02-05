@@ -1,0 +1,110 @@
+{
+  "Wolf": {
+    "REPRODUCE_PROBABILITY": 0.7,
+    "ANIMAL_PER_CEIL": 30,
+    "WEIGHT": 50,
+    "MAX_SATURATION": 8,
+    "MAX_STEPS": 3
+  },
+  "Snake": {
+    "REPRODUCE_PROBABILITY": 0.7,
+    "ANIMAL_PER_CEIL": 30,
+    "WEIGHT": 15,
+    "MAX_SATURATION": 3,
+    "MAX_STEPS": 1
+  },
+  "Fox": {
+    "REPRODUCE_PROBABILITY": 0.7,
+    "ANIMAL_PER_CEIL": 30,
+    "WEIGHT": 8,
+    "MAX_SATURATION": 2,
+    "MAX_STEPS": 2
+  },
+  "Bear": {
+    "REPRODUCE_PROBABILITY": 0.2,
+    "ANIMAL_PER_CEIL": 5,
+    "WEIGHT": 500,
+    "MAX_SATURATION": 80,
+    "MAX_STEPS": 2
+  },
+  "Eagle": {
+    "REPRODUCE_PROBABILITY": 0.7,
+    "ANIMAL_PER_CEIL": 20,
+    "WEIGHT": 6,
+    "MAX_SATURATION": 1,
+    "MAX_STEPS": 3
+  },
+
+  "Horse": {
+    "REPRODUCE_PROBABILITY": 0.5,
+    "ANIMAL_PER_CEIL": 20,
+    "WEIGHT": 400,
+    "MAX_SATURATION": 60,
+    "MAX_STEPS": 4
+  },
+
+  "Deer": {
+    "REPRODUCE_PROBABILITY": 0.5,
+    "ANIMAL_PER_CEIL": 20,
+    "WEIGHT": 300,
+    "MAX_SATURATION": 50,
+    "MAX_STEPS": 4
+  },
+
+  "Mouse": {
+    "REPRODUCE_PROBABILITY": 0.5,
+    "ANIMAL_PER_CEIL": 150,
+    "WEIGHT": 0.05,
+    "MAX_SATURATION": 0.01,
+    "MAX_STEPS": 1
+  },
+  "Goat": {
+    "REPRODUCE_PROBABILITY": 0.5,
+    "ANIMAL_PER_CEIL": 140,
+    "WEIGHT": 60,
+    "MAX_SATURATION": 0.45,
+    "MAX_STEPS": 3
+  },
+  "Sheep": {
+    "REPRODUCE_PROBABILITY": 0.5,
+    "ANIMAL_PER_CEIL": 140,
+    "WEIGHT": 70,
+    "MAX_SATURATION": 15,
+    "MAX_STEPS": 3
+  },
+  "Boar": {
+    "REPRODUCE_PROBABILITY": 0.5,
+    "ANIMAL_PER_CEIL": 50,
+    "WEIGHT": 400,
+    "MAX_SATURATION": 50,
+    "MAX_STEPS": 2
+  },
+  "Buffalo": {
+    "REPRODUCE_PROBABILITY": 0.6,
+    "ANIMAL_PER_CEIL": 10,
+    "WEIGHT": 700,
+    "MAX_SATURATION": 100,
+    "MAX_STEPS": 3
+  },
+  "Duck": {
+    "REPRODUCE_PROBABILITY": 0.6,
+    "ANIMAL_PER_CEIL": 200,
+    "WEIGHT": 1,
+    "MAX_SATURATION": 0.15,
+    "MAX_STEPS": 4
+  },
+  "Rabbit": {
+    "REPRODUCE_PROBABILITY": 0.7,
+    "ANIMAL_PER_CEIL": 150,
+    "WEIGHT": 1,
+    "MAX_SATURATION": 0.45,
+    "MAX_STEPS": 1
+  },
+  "Caterpillar": {
+    "REPRODUCE_PROBABILITY": 0.01,
+    "ANIMAL_PER_CEIL": 1000,
+    "WEIGHT": 0.01,
+    "MAX_SATURATION": 0,
+    "MAX_STEPS": 0
+  }
+}
